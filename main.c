@@ -17,11 +17,13 @@ nacionalidad. Mostrar todos los datos de cada empleado.
 E- Indicar el porcentaje de empleados argentinos*/
 #include <stdio.h>
 #include <string.h>
-#Define Max_Nacionalidades 7
-#Define Max_Empleado 500
-//Defino un array o un enum con las nacionalidades 
-//typedef enum {Argentina, Uruguaya, Chilena, Peruana, Boliviana, Paraguaya, Brasileña} T_Nacionalidades;
-typedef V_Nacionalidades[Max_Nacionalidades]
+#include "funciones_PuntoA.h"
+#define Max_Nacionalidades 7
+#define Max_Empleado 500
+
+//Defino un vector para las nacionalidades
+//typedef V_Nacionalidades[Max_Nacionalidades];
+
 //Defino un registro de fecha para hacer un manejo mejor de los datos
 typedef struct 
 {
@@ -36,11 +38,52 @@ typedef struct
 	char Apellido_Nombre[60];//Apellido, Nombre
 	T_Fecha Fecha_De_Nacimiento;
 	char Sexo;
-	V_Nacionalidades Nacionalidad;//?		
+//	V_Nacionalidades Nacionalidad;//?		
 }T_Empleado;
 
-typedef VT_Empleado[Max_Empleado];
+typedef T_Empleado VT_Empleados[Max_Empleado];
 
-void main() {
+
+void Cargar_Empleado(VT_Empleados Empleados, int *ml)
+{
+	int Continuar, i;
+	Continuar = 0;
+	i = 0;
+	printf("Ingrese los datos de los empleados:\n");
+	do 
+	{
+		printf("Ingrese el Apellido y Nombre:\n");
+		fgets(Empleados[i].Apellido_Nombre, 60, stdin);
+		
+		printf("Ingrese la fecha de nacimiento:\n");
+		printf("Dia: ");
+		scanf("%i",&Empleados[i].Fecha_De_Nacimiento.Dia);
+		fflush(stdin);
+		printf("Mes: ");
+		scanf("%i",&Empleados[i].Fecha_De_Nacimiento.Mes);
+		fflush(stdin);
+		printf("Año: ");
+		scanf("%i",&Empleados[i].Fecha_De_Nacimiento.Anio);
+		fflush(stdin);
+		
+		printf("Ingrese el Sexo:\n");
+		scanf(" %c",&Empleados[i].Sexo);
+		fflush(stdin);
+		//printf("Ingrese la/s nacionalidades:\n");
+		//scanf();
+			
+		printf("¿Desea continuar cargando empleados? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");
+		scanf("%i", &Continuar);
+		fflush(stdin);
+		i++;
+	}
+	while(*ml > 500 || Continuar != 1);	 	
+};
+void main() 
+{
+	VT_Empleados Empleados;
+	int ml;
+	 
+	Cargar_Empleado(Empleados, &ml);
 	
 }
