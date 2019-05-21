@@ -72,7 +72,7 @@ void Cargar_Empleado(VT_Empleados Empleados, int *ml)
 		//printf("Ingrese la/s nacionalidades:\n");
 		//scanf();
 			
-		printf("¿Desea continuar cargando empleados? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");
+		printf("Desea continuar cargando empleados? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");
 		scanf("%i", &Continuar);
 		fflush(stdin);
 		i++;
