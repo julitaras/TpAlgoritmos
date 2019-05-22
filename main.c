@@ -20,9 +20,13 @@ E- Indicar el porcentaje de empleados argentinos*/
 #include "funciones_PuntoA.h"
 #define Max_Nacionalidades 7
 #define Max_Empleado 500
+#define Max_Cadena_Nacionalidad 12 
 
-//Defino un vector para las nacionalidades
-//typedef V_Nacionalidades[Max_Nacionalidades];
+//Defino una matriz para las nacionalidades
+//typedef  char M_Nacionalidades[Max_Cadena_Nacionalidad][Max_Nacionalidades];
+
+ typedef char T_Nacionalidad[12]; 
+ typedef T_Nacionalidad V_Nacionalidad[Max_Nacionalidades];
 
 //Defino un registro de fecha para hacer un manejo mejor de los datos
 typedef struct 
@@ -38,15 +42,16 @@ typedef struct
 	char Apellido_Nombre[60];//Apellido, Nombre
 	T_Fecha Fecha_De_Nacimiento;
 	char Sexo;
-//	V_Nacionalidades Nacionalidad;//?		
+	V_Nacionalidad Nacionalidad;//?		
 }T_Empleado;
 
 typedef T_Empleado VT_Empleados[Max_Empleado];
 
 
+//Puede ser un solo Cargar datos que obtenga un mensaje, y el dato, ya que sino seria muy repetitiva
 void Cargar_Empleado(VT_Empleados Empleados, int *ml)
 {
-	int Continuar, i;
+	int Continuar, i/*, ml_Nacionalidad*/;
 	Continuar = 0;
 	i = 0;
 	printf("Ingrese los datos de los empleados:\n");
@@ -69,15 +74,22 @@ void Cargar_Empleado(VT_Empleados Empleados, int *ml)
 		printf("Ingrese el Sexo:\n");
 		scanf(" %c",&Empleados[i].Sexo);
 		fflush(stdin);
-		//printf("Ingrese la/s nacionalidades:\n");
-		//scanf();
-			
+		
+		//Cargar_Nacionalidades(Empleados[i].Nacionalidad, &ml_Nacionalidad);
+		do{
+		
+		printf("Ingrese la/s nacionalidades:\n");
+		fgets(Empleados[i].Nacionalidad[i], 12, stdin);
+		printf("Desea continuar cargando nacionalidades? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");
+		scanf("%i", &Continuar);
+		fflush(stdin);
+		}while(Continuar != 1);
 		printf("Desea continuar cargando empleados? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");
 		scanf("%i", &Continuar);
 		fflush(stdin);
 		i++;
 	}
-	while(*ml > 500 || Continuar != 1);	 	
+	while(*ml > Max_Empleado || Continuar != 1);	 	
 };
 void main() 
 {
