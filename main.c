@@ -21,11 +21,12 @@ E- Indicar el porcentaje de empleados argentinos*/
 #define Max_Nacionalidades 7
 #define Max_Empleado 500
 #define Max_Cadena_Nacionalidad 12 
+#define Maximo_String 60
 
 typedef char T_Nacionalidad[12]; 
 typedef T_Nacionalidad V_Nacionalidades[Max_Nacionalidades];
-//typedef V_Nacionalidades_Const = {Argentina, Uruguaya, Chilena, Peruana, Boliviana,
-//Paraguaya, Brasileña};
+typedef char Vector[9];
+typedef char Cadena[Maximo_String];
 //Defino un registro de fecha para hacer un manejo mejor de los datos
 typedef struct 
 {
@@ -37,11 +38,11 @@ typedef struct
 //Defino el registro que contentra los datos del empleado
 typedef struct 
 {
-	char Apellido_Nombre[60];//Apellido, Nombre
+	Cadena Apellido_Nombre;//Apellido, Nombre
 	T_Fecha Fecha_De_Nacimiento;
 	char Sexo;
 	V_Nacionalidades Nacionalidad;//?		
-}T_Empleado;
+} T_Empleado;
 
 //Defino el array de Empleados 
 typedef T_Empleado VT_Empleados[Max_Empleado];
@@ -84,23 +85,45 @@ int ValidarFecha(T_Fecha Fecha)
 	}	
 	return FechaCorrecta;
 };
-/*int ValidarNombre(char Nombre_Completo_Empleado)
+int Validar_Nombre(Cadena Nombre_Completo_Empleado)
 {
+	Vector Numeros = {'1','2','3','4','5','6','7','8','9'};
+	int i, Correcto;
+	Correcto = 0;
 	//burcar en nombre algun signo especial o numero
+	for(i = 0; i < 8; i++)
+	{
+		if(strchr(Nombre_Completo_Empleado, Numeros[i]) == NULL)
+		{
+			Correcto = 1;
+		}
+	}
+	return Correcto;
+};
 
-};*/
+int Validar_Sexo(char Genero)
+{
+	int Es_Valido;
+	Es_Valido = 0;
+	if((strcmp(Genero, "F") == 0) || (strcmp(Genero, "f") == 0) || (strcmp(Genero, "M") == 0) || (strcmp(Genero, "m") == 0))
+	{
+		Es_Valido = 1;
+	}
+	return Es_Valido;
+};
 
 int Validad_Nacionalidad(T_Nacionalidad Nacionalidad)
 {
-	int EsValida;
-	EsValida = 0;
+	int Es_Valida;
+	Es_Valida = 0;
 	//Agarro el vector, lo recorro y comparo si en esa pocisicion es igual a una de las opciones 
-		if(Nacionalidad == "Argentina" || Nacionalidad== "Uruguaya" || Nacionalidad == "Chilena" || Nacionalidad == "Peruana"||Nacionalidad == "Boliviana" || Nacionalidad== "Brasile�a" )
-		{
-			EsValida = 1;
-		}
+		//if(Nacionalidad == "Argentina" || Nacionalidad== "Uruguaya" || Nacionalidad == "Chilena" || Nacionalidad == "Peruana"||Nacionalidad == "Boliviana" || Nacionalidad== "Brasile�a" )
+	if((strcmp(Nacionalidad, "Argentina") == 0) || (strcmp(Nacionalidad, "Uruguaya") == 0) || (strcmp(Nacionalidad, "Chilena") == 0) || (strcmp(Nacionalidad, "Peruana") == 0) || (strcmp(Nacionalidad, "Boliviana") == 0) ||(strcmp(Nacionalidad, "Brasile�a") == 0) )
+	{
+		Es_Valida = 1;
+	}
 	
-	return EsValida;
+	return Es_Valida;
 };
 
 void Cargar_Nacionalidades(V_Nacionalidades Nacionalidades, int *ml_Nacionalidad)
@@ -117,10 +140,11 @@ void Cargar_Nacionalidades(V_Nacionalidades Nacionalidades, int *ml_Nacionalidad
 		{
 			printf("No existe esa nacionalidad\n");
 		}
-		else{
-		printf("Desea continuar cargando nacionalidades? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");//Mejorar con el SI y el NO
-		scanf("%i", &Continuar);
-		fflush(stdin);
+		else
+		{
+			printf("Desea continuar cargando nacionalidades? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");//Mejorar con el SI y el NO
+			scanf("%i", &Continuar);
+			fflush(stdin);
 		}
 		i++;
 	}
@@ -137,10 +161,18 @@ void Cargar_Empleado(VT_Empleados Empleados, int *ml)
 	printf("Ingrese los datos de los empleados:\n");
 	do 
 	{
-		//Cargar_Nombre_Completo_Empleado();
-		printf("Ingrese el Apellido y Nombre:\n");
-		fgets(Empleados[i].Apellido_Nombre, 60, stdin);
-		//ValidarNombre(Empleados[i].Apellido_Nombre); no sea numeros
+		do
+		{
+			//Cargar_Nombre_Completo_Empleado();
+			printf("Ingrese el Apellido y Nombre:\n");
+			fgets(Empleados[i].Apellido_Nombre, 60, stdin);
+			EsCorrecta = Validar_Nombre(Empleados[i].Apellido_Nombre); 
+			if (EsCorrecta == 0)
+			{
+				printf("Hubo algun error");
+			}
+		}
+		while(EsCorrecta != 1);
 		//Cargar_Fecha_Nacimiento();
 		do
 		{
@@ -162,12 +194,16 @@ void Cargar_Empleado(VT_Empleados Empleados, int *ml)
 		}
 		while(EsCorrecta != 1);
 		//Cargar_Genero();
-		//do{
+		do{
 		printf("Ingrese el Sexo:\n");
 		scanf(" %c",&Empleados[i].Sexo);
 		fflush(stdin);
-		//EsCorrecta = ValidarSexo(Empleados[i].Sexo);
-		//}while(EsCorrecta != 0);
+		EsCorrecta = Validar_Sexo(Empleados[i].Sexo);
+		if(EsCorrecta == 0)
+		{
+			 printf("Ingreso mal el genero, F o G");
+		}
+		}while(EsCorrecta != 1);
 		Cargar_Nacionalidades(Empleados[i].Nacionalidad, &ml_Nacionalidad);
 		
 		printf("Desea continuar cargando empleados? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n"); //Mejorar con el SI y el NO
@@ -183,5 +219,4 @@ void main()
 	int ml;
 	 
 	Cargar_Empleado(Empleados, &ml);
-	//Validar_Empleado();
 }
