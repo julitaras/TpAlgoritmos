@@ -87,13 +87,13 @@ int ValidarFecha(T_Fecha Fecha)
 };
 int Validar_Nombre(Cadena Nombre_Completo_Empleado)
 {
-	Vector Numeros = {'1','2','3','4','5','6','7','8','9'};
+	const Vector Numeros = {'1','2','3','4','5','6','7','8','9'};
 	int i, Correcto;
 	Correcto = 0;
 	//burcar en nombre algun signo especial o numero
 	for(i = 0; i < 8; i++)
 	{
-		if(strchr(Nombre_Completo_Empleado, Numeros[i]) == NULL)
+		if(strstr(Nombre_Completo_Empleado, Numeros[i]) == NULL)
 		{
 			Correcto = 1;
 		}
@@ -105,7 +105,7 @@ int Validar_Sexo(char Genero)
 {
 	int Es_Valido;
 	Es_Valido = 0;
-	if((strcmp(Genero, "F") == 0) || (strcmp(Genero, "f") == 0) || (strcmp(Genero, "M") == 0) || (strcmp(Genero, "m") == 0))
+	if((Genero == 'F' ) || (Genero  =='f')  || (Genero == 'M')  || (Genero == 'm') ) //Puede ser con strcmp o strchr
 	{
 		Es_Valido = 1;
 	}
@@ -116,7 +116,7 @@ int Validad_Nacionalidad(T_Nacionalidad Nacionalidad)
 {
 	int Es_Valida;
 	Es_Valida = 0;
-	//Agarro el vector, lo recorro y comparo si en esa pocisicion es igual a una de las opciones 
+	//Agarro el vector lo recorro y comparo si en esa pocisicion es igual a una de las opciones 
 		//if(Nacionalidad == "Argentina" || Nacionalidad== "Uruguaya" || Nacionalidad == "Chilena" || Nacionalidad == "Peruana"||Nacionalidad == "Boliviana" || Nacionalidad== "Brasile�a" )
 	if((strcmp(Nacionalidad, "Argentina") == 0) || (strcmp(Nacionalidad, "Uruguaya") == 0) || (strcmp(Nacionalidad, "Chilena") == 0) || (strcmp(Nacionalidad, "Peruana") == 0) || (strcmp(Nacionalidad, "Boliviana") == 0) ||(strcmp(Nacionalidad, "Brasile�a") == 0) )
 	{
