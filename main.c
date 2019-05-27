@@ -67,19 +67,9 @@ int ValidarFecha(T_Fecha Fecha)
 				FechaCorrecta = 1;
 			};break;
 			case 2 :  
-			if( (Fecha.Anio % 4 == 0)   &&   (Fecha.Anio % 100 != 0)   ||   (Fecha.Anio % 400 == 0) )
-			{
-				if( Fecha.Dia >= 1 && Fecha.Dia <= 29 ) 
-				{
-					FechaCorrecta = 1;
-				}
-				else 
-				{
-					if(Fecha.Dia >=1 && Fecha.Dia <= 28)
-					{
-						FechaCorrecta = 1;
-					}
-				}
+			if( (Fecha.Anio % 4 == 0)  &&  (Fecha.Anio % 100 != 0)  ||  (Fecha.Anio % 400 == 0)  || ( Fecha.Dia >= 1 && Fecha.Dia <= 29 ) || (Fecha.Dia >=1 && Fecha.Dia <= 28))
+			{	
+				FechaCorrecta = 1;
 			}break;
 		}
 	}	
