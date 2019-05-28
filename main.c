@@ -105,9 +105,9 @@ int validar_genero(char genero)
 
 int validar_nacionalidades(t_nacionalidad nacionalidad)
 {
-	int es_valida;
+	int es_valida, result;
 	es_valida = 0;
-	if((strcmp(nacionalidad, "argentina") == 0) || (strcmp(nacionalidad, "Argentina") == 0) || (strcmp(nacionalidad, "uruguaya") == 0) || (strcmp(nacionalidad, "Uruguaya") == 0) || (strcmp(nacionalidad, "chilena") == 0) || (strcmp(nacionalidad, "Chilena") == 0) || (strcmp(nacionalidad, "peruana") == 0) ||(strcmp(nacionalidad, "Peruana") == 0) || (strcmp(nacionalidad, "boliviana") == 0) || (strcmp(nacionalidad, "Boliviana") == 0) || (strcmp(nacionalidad, "brasileña") == 0) || (strcmp(nacionalidad, "Brasilenia") == 0) || (strcmp(nacionalidad, "brasilenia") == 0) || (strcmp(nacionalidad, "Brasile�a") == 0) )
+	if((strcmp(nacionalidad, "argentina\n") == 0) || (strcmp(nacionalidad, "Argentina\n") == 0) || (strcmp(nacionalidad, "uruguaya\n") == 0) || (strcmp(nacionalidad, "Uruguaya\n") == 0) || (strcmp(nacionalidad, "chilena\n") == 0) || (strcmp(nacionalidad, "Chilena\n") == 0) || (strcmp(nacionalidad, "peruana\n") == 0) ||(strcmp(nacionalidad, "Peruana\n") == 0) || (strcmp(nacionalidad, "boliviana\n") == 0) || (strcmp(nacionalidad, "Boliviana\n") == 0) || (strcmp(nacionalidad, "brasileña\n") == 0) || (strcmp(nacionalidad, "Brasilenia\n") == 0) || (strcmp(nacionalidad, "brasilenia\n") == 0) || (strcmp(nacionalidad, "Brasile�a\n") == 0) )
 	{
 		es_valida = 1;
 	}
