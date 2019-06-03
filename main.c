@@ -249,7 +249,6 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	printf("Ingrese los datos de los empleados:\n");
 	do 
 	{
-		
 		cargar_apellido(empleados[i].apellido);
 		cargar_nombre(empleados[i].nombre);
 		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
@@ -265,6 +264,27 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 void main() 
 {
 	vt_empleados empleados;
-	int ml;
+	int ml, opcion, continuar;
 	cargar_empleado(empleados, &ml);
+	do
+	{ 
+		printf ("Elegir opcion a realizar:\n");
+		printf ("(1) Punto B:\n");
+		printf ("(2) Punto C:\n");
+		printf ("(3) Punto D:\n");
+		printf ("(4) Punto E:\n");
+		scanf ("%i", &opcion);
+		fflush (stdin);
+		switch(opcion)
+		{
+			case 1: break;
+			case 2: break;
+			case 3: break;
+			case 4: break;
+		}
+		printf ("Desea realizar otra operacion? (0)Si o (1)No: ");
+		scanf ("%i", &continuar);
+		fflush(stdin);
+	}
+	while((opcion < 1) && (opcion > 4) && (continuar != 1));
 }
