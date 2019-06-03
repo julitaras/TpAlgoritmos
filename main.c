@@ -86,6 +86,7 @@ int validar_fecha(t_fecha fecha)
 	return fecha_correcta;
 };
 
+
 int validar_genero(char genero)
 {
 	int es_valido;
@@ -137,6 +138,7 @@ void cargar_nacionalidades(t_nacionalidades nacionalidades)
 	
 };
 
+
 int validar_string(char caracter)
 {
 	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
@@ -154,25 +156,9 @@ int validar_string(char caracter)
 	}
 	return incorrecto;
 };
-void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
+void cargar_nombre(t_cadena nombre )
 {
-	int j, nombre_incorrecto, apellido_incorrecto, largo;
-	do
-	{
-		printf("Ingrese el apellido:\n");
-		fgets(apellido, 30, stdin);
-		apellido_incorrecto = 0;
-		j = 0;
-		while( (apellido_incorrecto != 1)  &&  (j < strlen(apellido)) )	
-		{
-			apellido_incorrecto = validar_string(apellido[j]);
-			j++;
-		} 
-		if ( apellido_incorrecto == 1 )
-		{
-			printf("Ingreso mal el apellido. Solo se permiten letras: %s\n", apellido);
-		}
-	} while(apellido_incorrecto != 0);
+	int j, nombre_incorrecto largo;
 	do
 	{
 		printf("Ingrese el nombre:\n");
@@ -191,6 +177,27 @@ void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
 		}
 	}
 	while(nombre_incorrecto != 0 );
+};
+
+void cargar_apellido(t_cadena apellido)
+{
+	int j, apellido_incorrecto largo;
+	do
+	{
+		printf("Ingrese el apellido:\n");
+		fgets(apellido, 30, stdin);
+		apellido_incorrecto = 0;
+		j = 0;
+		while( (apellido_incorrecto != 1)  &&  (j < strlen(apellido)) )	
+		{
+			apellido_incorrecto = validar_string(apellido[j]);
+			j++;
+		} 
+		if ( apellido_incorrecto == 1 )
+		{
+			printf("Ingreso mal el apellido. Solo se permiten letras: %s\n", apellido);
+		}
+	} while(apellido_incorrecto != 0);
 };
 
 void cargar_fecha_nacimiento(t_fecha fecha_nacimiento)
@@ -242,7 +249,9 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	printf("Ingrese los datos de los empleados:\n");
 	do 
 	{
-		cargar_nombre_empleado(empleados[i].nombre, empleados[i].apellido);
+		
+		cargar_apellido(empleados[i].apellido);
+		cargar_nombre(empleados[i].nombre);
 		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
 		cargar_genero(empleados[i].sexo);
 		cargar_nacionalidades(empleados[i].nacionalidades);
