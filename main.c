@@ -85,22 +85,6 @@ int validar_fecha(t_fecha fecha)
 	}	
 	return fecha_correcta;
 };
-int validar_string(char caracter)
-{
-	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
-	int i, incorrecto;
-	incorrecto = 0;
-	i= 0;
-	//burcar en nombre algun signo especial o numero
-	for(i = 0; i <= 8; i++)
-	{
-		if(caracter == numeros[i])
-		{
-			incorrecto = 1;
-		}
-	}
-	return incorrecto;
-};
 
 int validar_genero(char genero)
 {
@@ -125,60 +109,88 @@ int validar_nacionalidades(ts_nacionalidad nacionalidad)
 	return es_valida;
 };
 
-void cargar_nacionalidades(v_nacionalidades nacionalidades, int *ml_nacionalidad)
+void cargar_nacionalidades(t_nacionalidades nacionalidades)
 {
 	int i, continuar, es_correcta;
 	i = 0;
 	continuar = 0;
+	nacionalidades.ml_nacionalidades = 0;
 	do
 	{
 		printf("Ingrese la/s nacionalidades:\n");
-		fgets(nacionalidades[i], 12, stdin);
-		es_correcta = validar_nacionalidades(nacionalidades[i]);
+		fgets(nacionalidades.nacionalidades[i], 12, stdin);
+		es_correcta = validar_nacionalidades(nacionalidades.nacionalidades[i]);
 		if(es_correcta == 0)
 		{
 			printf("No existe esa nacionalidad\n");
 		}
 		else
 		{
+			nacionalidades.ml_nacionalidades ++;
 			printf("Desea continuar cargando nacionalidades? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");//Mejorar con el SI y el NO
 			scanf("%i", &continuar);
 			fflush(stdin);
 		}
 		i++;
-		*ml_nacionalidad ++;
 	}
-	while((*ml_nacionalidad > 5) || continuar != 1 || es_correcta != 1);
+	while((nacionalidades.ml_nacionalidades > 5) || continuar != 1 || es_correcta != 1);
 	
 };
 
+int validar_string(char caracter)
+{
+	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
+	int i, incorrecto;
+	incorrecto = 0;
+	i= 0;
+	
+	for(i = 0; i <= 8; i++)
+	{
+		if(caracter == numeros[i])
+		{
+			incorrecto = 1;
+			printf("%i", incorrecto);
+		}
+	}
+	return incorrecto;
+};
 void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
 {
 	int j, nombre_incorrecto, apellido_incorrecto, largo;
 	do
-	{		
+	{
 		printf("Ingrese el apellido:\n");
 		fgets(apellido, 30, stdin);
-
+		apellido_incorrecto = 0;
+		j = 0;
+		while( (apellido_incorrecto != 1)  &&  (j < strlen(apellido)) )	
+		{
+			apellido_incorrecto = validar_string(apellido[j]);
+			j++;
+		} 
+		if ( apellido_incorrecto == 1 )
+		{
+			printf("Ingreso mal el apellido. Solo se permiten letras: %s\n", apellido);
+		}
+	} while(apellido_incorrecto != 0);
+	do
+	{
 		printf("Ingrese el nombre:\n");
 		fgets(nombre, 30, stdin);
 
 		nombre_incorrecto = 0;
-		apellido_incorrecto = 0;
 		j = 0;
-
-		while((j < strlen(nombre)) || (j < strlen(apellido)) && es_incorrecta != 1)	
+		while(  (nombre_incorrecto != 1)  &&  (j < strlen(nombre)) )	
 		{
 			nombre_incorrecto = validar_string(nombre[j]);
-			apellido_incorrecto = validar_string(apellido[j]);
 			j++;
 		} 
-		if (nombre_incorrecto == 1 || apellido_incorrecto == 1 )
+		if (nombre_incorrecto == 1 )
 		{
-			printf("Hubo algun error");
+			printf("Ingreso mal el nombre. Solo se permiten letras: %s\n", nombre);
 		}
 	}
-	while(es_incorrecta != 0);
+	while(nombre_incorrecto != 0 );
 };
 
 void cargar_fecha_nacimiento(t_fecha fecha_nacimiento)
@@ -230,10 +242,10 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	printf("Ingrese los datos de los empleados:\n");
 	do 
 	{
-		cargar_nombre_empleado(empleados[i].apellido_nombre);
+		cargar_nombre_empleado(empleados[i].nombre, empleados[i].apellido);
 		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
 		cargar_genero(empleados[i].sexo);
-		cargar_nacionalidades(empleados[i].nacionalidades, &ml_nacionalidad);
+		cargar_nacionalidades(empleados[i].nacionalidades);
 		*ml ++;
 		printf("Desea continuar cargando empleados? \n 0 PARA CONTINUAR, 1 PARA FINALIZAR: \n"); //Mejorar con el SI y el NO
 		scanf("%i", &continuar);
