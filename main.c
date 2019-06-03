@@ -19,12 +19,21 @@ E- Indicar el porcentaje de empleados argentinos*/
 #include "funciones_PuntoA.h"
 #define max_nacionalidades 7
 #define max_empleados 500
-#define max_string 60
+#define max_string 30
 
-typedef char t_nacionalidad[12]; 
-typedef t_nacionalidad v_nacionalidades[max_nacionalidades];
+typedef char ts_nacionalidad[12]; 
+typedef ts_nacionalidad v_nacionalidades[max_nacionalidades];
+
+//Defino un struct de nacinalidades para poder manejar el maximo logico en cada empleado
+typedef struct 
+{
+	v_nacionalidades nacionalidades;
+	int ml_nacionalidades;
+} t_nacionalidades;
+
 typedef char t_vector[9];
 typedef char t_cadena[max_string];
+
 //Defino un registro de fecha para hacer un manejo mejor de los datos
 typedef struct 
 {
@@ -36,10 +45,11 @@ typedef struct
 //Defino el registro que contentra los datos del empleado
 typedef struct 
 {
-	t_cadena apellido_nombre;//Apellido, Nombre
+	t_cadena nombre;
+	t_cadena apellido;
 	t_fecha fecha_de_nacimiento;
 	char sexo;
-	v_nacionalidades nacionalidades;//?		
+	t_nacionalidades nacionalidades;	
 } t_empleado;
 
 //Defino el array de Empleados 
@@ -75,7 +85,7 @@ int validar_fecha(t_fecha fecha)
 	}	
 	return fecha_correcta;
 };
-int validar_nombre(char caracter_nombre)
+int validar_string(char caracter_nombre)
 {
 	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
 	int i, incorrecto;
@@ -103,7 +113,7 @@ int validar_genero(char genero)
 	return es_valido;
 };
 
-int validar_nacionalidades(t_nacionalidad nacionalidad)
+int validar_nacionalidades(ts_nacionalidad nacionalidad)
 {
 	int es_valida, result;
 	es_valida = 0;
@@ -142,17 +152,23 @@ void cargar_nacionalidades(v_nacionalidades nacionalidades, int *ml_nacionalidad
 	
 };
 
-void cargar_nombre_empleado(t_cadena nombre_completo)
+void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
 {
-	int j, es_incorrecta, largo;
+	int j,es_incorrecta, largo;
 	do
 	{		
-		printf("Ingrese el Apellido y Nombre:\n");
-		fgets(nombre_completo, 60, stdin);
+		printf("Ingrese el apellido:\n");
+		fgets(apellido, 30, stdin);
+
+		printf("Ingrese el nombre:\n");
+		fgets(nombre, 30, stdin);
+
 		es_incorrecta = 0;
-		while((j < strlen(nombre_completo)) && es_incorrecta != 1)	
+		j = 0;
+
+		while((max_string <= strlen(nombre)) || (max_string <= strlen(apellido)) && es_incorrecta != 1)	
 		{
-			es_incorrecta = validar_nombre(nombre_completo[j]);
+			es_incorrecta = validar_string(nombre_completo[j]);
 			j++;
 		} 
 		if (es_incorrecta == 1)
