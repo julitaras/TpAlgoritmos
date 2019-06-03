@@ -85,7 +85,7 @@ int validar_fecha(t_fecha fecha)
 	}	
 	return fecha_correcta;
 };
-int validar_string(char caracter_nombre)
+int validar_string(char caracter)
 {
 	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
 	int i, incorrecto;
@@ -94,7 +94,7 @@ int validar_string(char caracter_nombre)
 	//burcar en nombre algun signo especial o numero
 	for(i = 0; i <= 8; i++)
 	{
-		if(caracter_nombre == numeros[i])
+		if(caracter == numeros[i])
 		{
 			incorrecto = 1;
 		}
@@ -154,7 +154,7 @@ void cargar_nacionalidades(v_nacionalidades nacionalidades, int *ml_nacionalidad
 
 void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
 {
-	int j,es_incorrecta, largo;
+	int j, nombre_incorrecto, apellido_incorrecto, largo;
 	do
 	{		
 		printf("Ingrese el apellido:\n");
@@ -163,15 +163,17 @@ void cargar_nombre_empleado(t_cadena nombre, t_cadena apellido)
 		printf("Ingrese el nombre:\n");
 		fgets(nombre, 30, stdin);
 
-		es_incorrecta = 0;
+		nombre_incorrecto = 0;
+		apellido_incorrecto = 0;
 		j = 0;
 
-		while((max_string <= strlen(nombre)) || (max_string <= strlen(apellido)) && es_incorrecta != 1)	
+		while((j < strlen(nombre)) || (j < strlen(apellido)) && es_incorrecta != 1)	
 		{
-			es_incorrecta = validar_string(nombre_completo[j]);
+			nombre_incorrecto = validar_string(nombre[j]);
+			apellido_incorrecto = validar_string(apellido[j]);
 			j++;
 		} 
-		if (es_incorrecta == 1)
+		if (nombre_incorrecto == 1 || apellido_incorrecto == 1 )
 		{
 			printf("Hubo algun error");
 		}
