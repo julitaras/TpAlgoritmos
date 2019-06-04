@@ -30,7 +30,7 @@ typedef struct
 	int ml_nacionalidades;
 } t_nacionalidades;
 
-typedef char t_vector[9];
+typedef char t_vector[26];
 typedef char t_cadena[max_string];
 
 //Defino un registro de fecha para hacer un manejo mejor de los datos
@@ -54,12 +54,33 @@ typedef struct
 //Defino el array de Empleados 
 typedef t_empleado vt_empleados[max_empleados];
 
+int validar_numero(int numero)
+{
+	t_vector letras = {'a', 'b', 'c', 'd', 'e' ,'f', 'g', 'h', 'i' ,'j','k', 'l', 'm', 'n' ,'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+	int i, incorrecto;
+	incorrecto = 0;
+	i= 0;
+	
+	for(i = 0; i <= 26; i++)
+	{
+		if(numero == letras[i])
+		{
+			incorrecto = 1;
+			printf("%i", incorrecto);
+		}
+	}
+	return incorrecto;
+};
 //Valido la fecha de nacimiento, FALTA VALIDAR SI SE INGRESA UN CARACTER EN VEZ DE NUMERO
 int validar_fecha(t_fecha fecha)
 {
 	int fecha_correcta;
 	fecha_correcta = 0;
-	if(fecha.mes >=1 && fecha.mes <= 12)
+	if( (validar_numero(fecha.dia) == 0) || (validar_numero(fecha.mes) == 0) || (validar_numero(fecha.anio) == 0) )
+	{
+		fecha_correcta = 1;
+	}
+	if( (fecha.mes >=1) && (fecha.mes <= 12) )
 	{
 		switch(fecha.mes)
 		{
@@ -81,7 +102,7 @@ int validar_fecha(t_fecha fecha)
 				fecha_correcta = 1;
 			};break;
 		}
-	}	
+	}
 	return fecha_correcta;
 };
 
@@ -262,109 +283,133 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	while(*ml > max_empleados || continuar != 1);	 	
 };
 
-void mostrar_nacidos_antes_2000(vt_empleados empleado)
-{
-   int i, cortar_desde;
-  
-   ordenar_por_anio(empleado);
-   ordenar_por_dia(empleado);
-
-   cortar_desde = buscar(empleado, 2000);
-   if(cortar_desde != -1)
-   {
-       cortar(empleado, menores_a_2000, cortar_desde);
-   }
-
-   mostrar(menores_a_2000, cortar_desde);
-};
-
 void ordenar_por_anio(vt_empleados empleado, int ml)
 {
    int i, j;
    t_empleado aux;
-    for (i=1; i < ml; i++)
-	{
-       for(j=0 ; j < ml - i; j++)
-	   {
-           if (empleado[j].fecha_de_nacimiento.anio > empleado[j+1].fecha_de_nacimiento.anio)
-		   {
+    for (i=1; i < ml; i++){
+       for(j=0 ; j < ml - i; j++){
+           if (empleado[j].fecha_de_nacimiento.anio > empleado[j+1].fecha_de_nacimiento.anio){
                aux = empleado[j];
                empleado[j] = empleado[j+1];
                empleado[j+1] = aux;   
              }
-		}
+         }
     }
 };
 
-void ordenar_por_dia(vt_empleados empleado, int ml){
+void ordenar_por_dia(vt_empleados empleado, int ml)
+{
    int i, j;
-   t_fecha aux;
-    for (i=1; i < ml; i++)
-	{
-       for(j=0 ; j < ml - i; j++)
-	   {
-           if((empleado[j].fecha_de_nacimiento.anio == empleado[j+1].fecha_de_nacimiento.anio) && (empleado[j].fecha_de_nacimiento.mes == empleado[j+1].fecha_de_nacimiento.mes))
-		   {
-               if (empleado[j].fecha_de_nacimiento.dia > empleado[j+1].fecha_de_nacimiento.dia)
-			   {
+   t_empleado aux;
+    for (i=1; i < ml; i++){
+       for(j=0 ; j < ml - i; j++){
+           if((empleado[j].fecha_de_nacimiento.anio == empleado[j+1].fecha_de_nacimiento.anio) && (empleado[j].fecha_de_nacimiento.mes == empleado[j+1].fecha_de_nacimiento.mes)){
+               if (empleado[j].fecha_de_nacimiento.dia > empleado[j+1].fecha_de_nacimiento.dia){
                    aux = empleado[j];
                    empleado[j] = empleado[j+1];
-                   empleado[j+1] = aux;
-				}               
+                   empleado[j+1] = aux;   
+                 }               
            }
-	   }
+         }
     }
 };
 
-int buscar(vt_empleados empleado, int buscar, int ml){
+int buscar(vt_empleados empleado, int buscar, int ml)
+{
    int medio, inicio, final;
    inicio = 0;
    final = ml;
     while(inicio <= final){
        medio = (inicio + final)/2;
-       if(empleado[medio].fecha_de_nacimiento.anio == buscar)
-	   {
+       if(empleado[medio].fecha_de_nacimiento.anio == buscar){
             return medio;
        }
-        if(empleado[medio].fecha_de_nacimiento.anio < buscar)
-		{
+        if(empleado[medio].fecha_de_nacimiento.anio < buscar){
             inicio = medio+1;
         }
-        else
-		{
+        else{
             final = medio-1;
         }
     }
     return -1;  
 };
-void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde){
+void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde)
+{
    int i, j;
-   t_empleado copia;
-   for(i = 0; i < cortar_desde; i++)
-   {
-       copia.dia = empleado[i].fecha_de_nacimiento.dia;
-       copia.mes = empleado[i].fecha_de_nacimiento.mes;
-       copia.anio = empleado[i].fecha_de_nacimiento.anio;
-       menores_a_2000[i] = copia;
+   t_empleado copia_empleado;
+   for(i = 0; i < cortar_desde; i++){
+       copia_empleado.fecha_de_nacimiento.dia = empleado[i].fecha_de_nacimiento.dia;
+       copia_empleado.fecha_de_nacimiento.mes = empleado[i].fecha_de_nacimiento.mes;
+       copia_empleado.fecha_de_nacimiento.anio = empleado[i].fecha_de_nacimiento.anio;
+       menores_a_2000[i] = copia_empleado;
    }  
 };
 
-void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad){
+void mostrar(vt_empleados empleado, int cortar_desde)
+{
    int i, j;
-   for(i = 0; i < cortar_desde; i++){
+   for(i = 0; i < cortar_desde; i++)
+   {
        printf("EL EMPLEADO: %s %s", empleado[i].nombre,
                                     empleado[i].apellido);
        printf("\n\t\t Nació el: %i %i %i", empleado[i].fecha_de_nacimiento.dia,
                                            empleado[i].fecha_de_nacimiento.mes,
                                            empleado[i].fecha_de_nacimiento.anio);
-       printf("\n\t\t Sexo: %c\n", empleado[i].fecha_de_nacimiento.sexo);
+       printf("\n\t\t Sexo: %c\n", empleado[i].sexo);
        printf("\n\t\t De nacionalidad(es): \n");
-       for(j=0; j < empleado.nacionalidades.ml_nacionalidad; j++){
+       for(j=0; j < empleado[i].nacionalidades.ml_nacionalidades; j++)
+	   {
            printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades);
        }
    }   
 };
 
+void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
+{
+   int i, cortar_desde;
+   vt_empleados menores_a_2000;
+   ordenar_por_anio(empleado, ml);
+   ordenar_por_dia(empleado, ml);
+
+   cortar_desde = buscar(empleado, 2000, ml);
+   if(cortar_desde != -1){
+       cortar(empleado, menores_a_2000, cortar_desde);
+   }
+   mostrar(menores_a_2000, cortar_desde);
+};
+
+/*
+void buscar_empleado_punto_c (vt_empleados empleado, int ml)
+{
+	int i, j, aux;
+	char palabra[30];
+	aux = 0;
+	int cont = 0;
+		
+	printf ("Ingresar apellido a buscar: ");
+	fgets (palabra, 30, stdin);
+	
+	for (i = 0; i < ml && aux == 0; i++)
+	{
+		j = strcmp (palabra, empleado[i].apellido);
+		if (j == 0 && (empleado[max_empleados].sexo == 'f' || empleado[max_empleados].sexo == 'F'))
+		{ /*Falta la condicion de haber nacido en verano*/
+/*			printf ("Los siguiente empleados tienen apellido %s", empleado[i].apellido);
+			printf ("Nombre: %s", empleado[max_empleados].nombre); 
+			printf ("Nacionalidad: %s", empleado[max_empleados].nacionalidades);
+			printf ("Sexo: %c\n", empleado[max_empleados].sexo);
+// Falta leer fecha de nacimiento
+// Solo esta mostrando los datos del ultimo empleado cargado
+		} 
+		else
+		{
+			printf ("No se encontro empleado\n");
+		}
+		aux = 1;
+	}
+};
+*/
 void main() 
 {
 	vt_empleados empleados;
@@ -381,9 +426,10 @@ void main()
 		fflush (stdin);
 		switch(opcion)
 		{
-			case 1: mostrar_nacidos_antes_2000(empleados);
+			case 1: mostrar_nacidos_antes_2000(empleados, ml);
 					break;
-		//	case 2: break;
+		//	case 2: buscar_empleado_punto_c(empleados, ml);
+		//			break;
 		//	case 3: break;
 		//	case 4: break;
 		}
@@ -391,5 +437,5 @@ void main()
 		scanf ("%i", &continuar);
 		fflush(stdin);
 	}
-	while/*(*/(opcion < 1) /*&& (opcion > 4) && (continuar != 1))*/;
+	while/*(*/( (opcion < 1) /*&& (opcion > 4) &&*/ && (continuar != 1));
 }
