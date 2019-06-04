@@ -1,3 +1,21 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@julitaras 
+0
+0 0 julitaras/TpAlgoritmos
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
+TpAlgoritmos/main.c
+ Julieta yo que se
+58986ad 42 minutes ago
+446 lines (415 sloc)  12.2 KB
+    
 /*Una empresa que se dedica a la reubicaci�n de empleados tiene una lista de 500
 empleados (como m�ximo) con la siguiente informaci�n.
 - Nombre y apellido. Con el formato "Apellidos, Nombres".
@@ -383,6 +401,43 @@ void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
    mostrar(menores_a_2000, cortar_desde);
 };
 
+void incrementar_posiciones(t_nacionalidades nacionalidades, int *nueva_posicion)
+{
+   ts_nacionalidad comparar_nacionalidad;
+   for(int i = 0; i < ml; i++)
+   {
+       strcpy(comparar_nacionalidad,nacionalidades.nacionalidades[i]);
+       if(nacionalidades.nacionalidades)
+	   {
+           strlwr(comparar_nacionalidad);
+           if((strcmp(comparar_nacionalidad,"argentina") == 0) ||((strcmp(comparar_nacionalidad, "uruguaya")) == 0))
+		   {
+               *nueva_posicion++;
+           }
+       }
+   }
+};
+
+void crear_lista_arg_uru(int ml, vt_empleados empleados)
+{
+   int i, nueva_posicion = 0, indice_anterior;
+   indice_anterior = nueva_posicion;
+   vt_empleado empleados_arg_uru;
+   for(i = 0 ; i < ml ; i++)
+   {
+       if(strlen(empleados[i].nacionalidades.nacionalidades) == 1)
+	   {
+           incrementar_posiciones(empleados[i].nacionalidades, &nueva_posicion);
+           if(indice_anterior < nueva_posicion)
+		   {
+               empleados_arg_uru[nueva_posicion] = empleados[i];
+           }
+           indice_anterior = indice_anterior + nueva_posicion;
+       }
+   }
+
+   mostrar(empleados_arg_uru, nueva_posicion);
+};
 /*
 void buscar_empleado_punto_c (vt_empleados empleado, int ml)
 {
@@ -424,7 +479,7 @@ void main()
 		printf ("Elegir opcion a realizar:\n");
 		printf ("(1) Punto B:\n");
 		//printf ("(2) Punto C:\n");
-		//printf ("(3) Punto D:\n");
+		printf ("(3) Punto D:\n");
 		//printf ("(4) Punto E:\n");
 		scanf ("%i", &opcion);
 		fflush (stdin);
@@ -434,7 +489,8 @@ void main()
 					break;
 		//	case 2: buscar_empleado_punto_c(empleados, ml);
 		//			break;
-		//	case 3: break;
+			case 3: crear_lista_arg_uru(ml, empleados)
+					break;
 		//	case 4: break;
 		}
 		printf ("Desea realizar otra operacion? (0)Si o (1)No: ");
