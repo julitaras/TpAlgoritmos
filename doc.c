@@ -142,18 +142,24 @@ void cargar_nacionalidades(v_nacionalidades nacionalidades, int *ml_nacionalidad
     while((*ml_nacionalidad > 5) || continuar != 1 || es_correcta != 1);
 
     }
-int doble_nacionalidad(v_nacionalidades nacionalidades, int ml_nacionalidad){
-      int d;
-      d=0;
-      if(ml_nacionalidad > 1){
-        for(d=0;d<ml_nacionalidad;d++){
-            if((strcmp(nacionalidades[d],"Argentina\n") == 0)||((strcmp(nacionalidades[d], "argentina\n")) == 0)||((strcmp(nacionalidades[d], "Uruguaya\n") == 0))||((strcmp(nacionalidades[d], "uruguaya\n")) == 0)){
-                return 1;
-            }
+int doble_nacionalidad(t_nacionalidades nacionalidades)
+{
+    int d,valor_que_devuelve;
+    valor_que_devuelve=0;
+    d = 0;
+    if(nacionalidades.ml_nacionalidades > 1)
+    {
+        while(d < )
+        {
+            if((strcmp(nacionalidades.nacionalidades[d],"Argentina\n") == 0)||((strcmp(nacionalidades.nacionalidades[d], "argentina\n")) == 0)||((strcmp(nacionalidades.nacionalidades[d], "Uruguaya\n") == 0))||((strcmp(nacionalidades.nacionalidades[d], "uruguaya\n")) == 0)){
+                valor_que_devuelve=1;
 
+        return valor_que_devuelve;
                 }
+    }
+    }
 }
-}
+
 void cargar_nombre_empleado(t_cadena nombre_completo)
 {
     int j, es_incorrecta, largo;
@@ -331,7 +337,21 @@ void mostrar(VT_Empleados empleado, int ml, int ml_nacionalidad){
    }   
 }
 
-
+void mostrar_punto_D(int ml, vt_empleados empleados)
+{
+	int i;
+    for(i=0;i<ml;i++)
+	{
+        if(doble_nacionalidad(empleados[i].nacionalidades)==1)
+		{
+            printf("El empleado %s %s tiene mas de una nacionalidad y una de ellas es la Argentina o la uruguaya\n",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);
+		}
+		if(doble_nacionalidad(empleados[i].nacionalidades)==0)
+		{
+            printf("El empleado %s %s no tiene mas de una nacionalidad, o una de ellas no es la Argentina o la uruguaya",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);//Falta mostrar la fecha y el genero del empleado
+		}
+	}
+}
 
 
 
@@ -392,3 +412,99 @@ void mostrar_punto_D(int ml,vt_empleados empleados){
             printf("El empleado %s %s no tiene mas de una nacionalidad, o una de ellas no es la Argentina o la uruguaya",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);//Falta mostrar la fecha y el genero del empleado
     }
     }
+    
+void mostrar_nacidos_antes_2000(vt_empleados empleado);
+void ordenar_por_anio(vt_empleados empleado, int ml);
+void ordenar_por_dia(vt_empleados empleado, int ml);
+int buscar(vt_empleados empleado, int buscar, int ml);
+void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde);
+void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad);
+
+void mostrar_nacidos_antes_2000(vt_empleados empleado){
+   int i, cortar_desde;
+  
+   ordenar_por_anio(empleado);
+   ordenar_por_dia(empleado);
+
+   cortar_desde = buscar(empleado, 2000);
+   if(cortar_desde != -1){
+       cortar(empleado, menores_a_2000, cortar_desde);
+   }
+
+   mostrar(menores_a_2000, cortar_desde);
+}
+
+void ordenar_por_anio(vt_empleados empleado, int ml){
+   int i, j;
+   t_empleado aux;
+    for (i=1; i < ml; i++){
+       for(j=0 ; j < ml - i; j++){
+           if (empleado[j].anio > empleado[j+1].anio){
+               aux = empleado[j];
+               empleado[j] = empleado[j+1];
+               empleado[j+1] = aux;   
+             }
+         }
+    }
+}
+
+void ordenar_por_dia(vt_empleados empleado, int ml){
+   int i, j;
+   t_fecha aux;
+    for (i=1; i < ml; i++){
+       for(j=0 ; j < ml - i; j++){
+           if((empleado[j].anio == empleado[j+1].anio) && (empleado[j].mes == empleado[j+1].mes)){
+               if (empleado[j].dia > empleado[j+1].dia){
+                   aux = empleado[j];
+                   empleado[j] = empleado[j+1];
+                   empleado[j+1] = aux;   
+                 }               
+           }
+         }
+    }
+}
+
+int buscar(vt_empleados empleado, int buscar, int ml){
+   int medio, inicio, final;
+   inicio = 0;
+   final = ml;
+    while(inicio <= final){
+       medio = (inicio + final)/2;
+       if(empleado[medio].anio == buscar){
+            return medio;
+       }
+        if(empleado[medio].anio < buscar){
+            inicio = medio+1;
+        }
+        else{
+            final = medio-1;
+        }
+    }
+    return -1;  
+}
+void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde){
+   int i, j;
+   t_empleado copia;
+   for(i = 0; i < cortar_desde; i++){
+       copia.dia = empleado[i].dia;
+       copia.mes = empleado[i].mes;
+       copia.anio = empleado[i].anio;
+       menores_a_2000[i] = copia;
+   }  
+}
+
+void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad){
+   int i, j;
+   for(i = 0; i < cortar_desde; i++){
+       printf("EL EMPLEADO: %s %s", empleado[i].nombre,
+                                    empleado[i].apellido);
+       printf("\n\t\t Nació el: %i %i %i", empleado[i].fecha_de_nacimiento.dia,
+                                           empleado[i].fecha_de_nacimiento.mes,
+                                           empleado[i].fecha_de_nacimiento.anio);
+       printf("\n\t\t Sexo: %c\n", empleado[i].fecha_de_nacimiento.sexo);
+       printf("\n\t\t De nacionalidad(es): \n");
+       for(j=0; j < empleado.nacionalidades.ml_nacionalidad; j++){
+           printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades);
+       }
+   }   
+}

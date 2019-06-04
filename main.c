@@ -16,7 +16,6 @@ nacionalidad. Mostrar todos los datos de cada empleado.
 E- Indicar el porcentaje de empleados argentinos*/
 #include <stdio.h>
 #include <string.h>
-#include "funciones_PuntoA.h"
 #define max_nacionalidades 7
 #define max_empleados 500
 #define max_string 30
@@ -128,7 +127,7 @@ void cargar_nacionalidades(t_nacionalidades nacionalidades)
 		else
 		{
 			nacionalidades.ml_nacionalidades ++;
-			printf("Desea continuar cargando nacionalidades? 0 PARA CONTINUAR,\n 1 PARA FINALIZAR: \n");//Mejorar con el SI y el NO
+			printf("Desea continuar cargando nacionalidades? (0)Si o (1)No: \n");//Mejorar con el SI y el NO
 			scanf("%i", &continuar);
 			fflush(stdin);
 		}
@@ -254,73 +253,143 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
 		cargar_genero(empleados[i].sexo);
 		cargar_nacionalidades(empleados[i].nacionalidades);
-		*ml ++;
-		printf("Desea continuar cargando empleados? \n 0 PARA CONTINUAR, 1 PARA FINALIZAR: \n"); //Mejorar con el SI y el NO
+		*ml = *ml + 1;
+		printf("Desea coninuar cargando empleados? (0)Si o (1)No:  \n"); //Mejorar con el SI y el NO
 		scanf("%i", &continuar);
 		fflush(stdin);
 		i++;
-	}while(*ml > max_empleados || continuar != 1);	 	
-}
-int doble_nacionalidad(t_nacionalidades nacionalidades)
-{
-    int d,valor_que_devuelve;
-    d=0;
-    valor_que_devuelve=0;
-    if(nacionalidades.ml_nacionalidades > 1)
-	{
-      for(d=0;d<nacionalidades.ml_nacionalidades;d++)
-	  {
-		if((strcmp(nacionalidades.nacionalidades[d],"Argentina\n") == 0)||((strcmp(nacionalidades.nacionalidades[d], "argentina\n")) == 0)||((strcmp(nacionalidades.nacionalidades[d], "Uruguaya\n") == 0))||((strcmp(nacionalidades.nacionalidades[d], "uruguaya\n")) == 0))
-		{
-        valor_que_devuelve=1;
-    	}
 	}
-	return valor_que_devuelve;
-}
-}
-void mostrar_punto_D(int ml, vt_empleados empleados)
+	while(*ml > max_empleados || continuar != 1);	 	
+};
+
+void mostrar_nacidos_antes_2000(vt_empleados empleado)
 {
-	int i;
-    for(i=0;i<ml;i++)
+   int i, cortar_desde;
+  
+   ordenar_por_anio(empleado);
+   ordenar_por_dia(empleado);
+
+   cortar_desde = buscar(empleado, 2000);
+   if(cortar_desde != -1)
+   {
+       cortar(empleado, menores_a_2000, cortar_desde);
+   }
+
+   mostrar(menores_a_2000, cortar_desde);
+};
+
+void ordenar_por_anio(vt_empleados empleado, int ml)
+{
+   int i, j;
+   t_empleado aux;
+    for (i=1; i < ml; i++)
 	{
-        if(doble_nacionalidad(empleados[i].nacionalidades)==1)
-		{
-            printf("El empleado %s %s tiene mas de una nacionalidad y una de ellas es la Argentina o la uruguaya\n",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);
+       for(j=0 ; j < ml - i; j++)
+	   {
+           if (empleado[j].fecha_de_nacimiento.anio > empleado[j+1].fecha_de_nacimiento.anio)
+		   {
+               aux = empleado[j];
+               empleado[j] = empleado[j+1];
+               empleado[j+1] = aux;   
+             }
 		}
-		if(doble_nacionalidad(empleados[i].nacionalidades)==0)
+    }
+};
+
+void ordenar_por_dia(vt_empleados empleado, int ml){
+   int i, j;
+   t_fecha aux;
+    for (i=1; i < ml; i++)
+	{
+       for(j=0 ; j < ml - i; j++)
+	   {
+           if((empleado[j].fecha_de_nacimiento.anio == empleado[j+1].fecha_de_nacimiento.anio) && (empleado[j].fecha_de_nacimiento.mes == empleado[j+1].fecha_de_nacimiento.mes))
+		   {
+               if (empleado[j].fecha_de_nacimiento.dia > empleado[j+1].fecha_de_nacimiento.dia)
+			   {
+                   aux = empleado[j];
+                   empleado[j] = empleado[j+1];
+                   empleado[j+1] = aux;
+				}               
+           }
+	   }
+    }
+};
+
+int buscar(vt_empleados empleado, int buscar, int ml){
+   int medio, inicio, final;
+   inicio = 0;
+   final = ml;
+    while(inicio <= final){
+       medio = (inicio + final)/2;
+       if(empleado[medio].fecha_de_nacimiento.anio == buscar)
+	   {
+            return medio;
+       }
+        if(empleado[medio].fecha_de_nacimiento.anio < buscar)
 		{
-            printf("El empleado %s %s no tiene mas de una nacionalidad, o una de ellas no es la Argentina o la uruguaya",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);//Falta mostrar la fecha y el genero del empleado
-		}
-	}
-}
+            inicio = medio+1;
+        }
+        else
+		{
+            final = medio-1;
+        }
+    }
+    return -1;  
+};
+void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde){
+   int i, j;
+   t_empleado copia;
+   for(i = 0; i < cortar_desde; i++)
+   {
+       copia.dia = empleado[i].fecha_de_nacimiento.dia;
+       copia.mes = empleado[i].fecha_de_nacimiento.mes;
+       copia.anio = empleado[i].fecha_de_nacimiento.anio;
+       menores_a_2000[i] = copia;
+   }  
+};
+
+void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad){
+   int i, j;
+   for(i = 0; i < cortar_desde; i++){
+       printf("EL EMPLEADO: %s %s", empleado[i].nombre,
+                                    empleado[i].apellido);
+       printf("\n\t\t Nació el: %i %i %i", empleado[i].fecha_de_nacimiento.dia,
+                                           empleado[i].fecha_de_nacimiento.mes,
+                                           empleado[i].fecha_de_nacimiento.anio);
+       printf("\n\t\t Sexo: %c\n", empleado[i].fecha_de_nacimiento.sexo);
+       printf("\n\t\t De nacionalidad(es): \n");
+       for(j=0; j < empleado.nacionalidades.ml_nacionalidad; j++){
+           printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades);
+       }
+   }   
+};
+
 void main() 
 {
 	vt_empleados empleados;
 	int ml, opcion, continuar;
 	cargar_empleado(empleados, &ml);
-	printf("ahora mostraremos puntoD");
-	mostrar_punto_D(ml, empleados);
-
-	/*do
+	do
 	{ 
 		printf ("Elegir opcion a realizar:\n");
 		printf ("(1) Punto B:\n");
-		printf ("(2) Punto C:\n");
-		printf ("(3) Punto D:\n");
-		printf ("(4) Punto E:\n");
+		//printf ("(2) Punto C:\n");
+		//printf ("(3) Punto D:\n");
+		//printf ("(4) Punto E:\n");
 		scanf ("%i", &opcion);
 		fflush (stdin);
 		switch(opcion)
 		{
-			case 1: break;
-			case 2: break;
-			case 3: break;
-			case 4: break;
+			case 1: mostrar_nacidos_antes_2000(empleados);
+					break;
+		//	case 2: break;
+		//	case 3: break;
+		//	case 4: break;
 		}
 		printf ("Desea realizar otra operacion? (0)Si o (1)No: ");
 		scanf ("%i", &continuar);
 		fflush(stdin);
 	}
-	while((opcion < 1) && (opcion > 4) && (continuar != 1));
-*/
+	while/*(*/(opcion < 1) /*&& (opcion > 4) && (continuar != 1))*/;
 }
