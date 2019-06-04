@@ -349,6 +349,7 @@ void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde
 void mostrar(vt_empleados empleado, int cortar_desde)
 {
    int i, j;
+   printf("Dentro de mostrar\n");
    for(i = 0; i < cortar_desde; i++)
    {
        printf("EL EMPLEADO: %s %s", empleado[i].nombre,
@@ -367,14 +368,17 @@ void mostrar(vt_empleados empleado, int cortar_desde)
 
 void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
 {
+	printf("dentro del punto b ");
    int i, cortar_desde;
    vt_empleados menores_a_2000;
    ordenar_por_anio(empleado, ml);
    ordenar_por_dia(empleado, ml);
-
+	printf("Depues de ordenar los empleados");
    cortar_desde = buscar(empleado, 2000, ml);
+   printf("cortando %i", cortar_desde);
    if(cortar_desde != -1){
        cortar(empleado, menores_a_2000, cortar_desde);
+	printf("despues de cortar\n");
    }
    mostrar(menores_a_2000, cortar_desde);
 };
