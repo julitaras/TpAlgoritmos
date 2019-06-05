@@ -284,29 +284,6 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	while(*ml > max_empleados || continuar != 1);	 	
 };
 
-void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml){
-       int i, cortar_desde;
-       vt_empleados menores_a_2000;
-       for(i = 0; i < ml; i++){
-           menores_a_2000[i] = empleado[i];
-        }    
-        printf("LISTA DESORDENADA:\n\n");
-        for(i = 0; i < ml; i++){
-           printf("%s %s: %i\n", menores_a_2000[i].nombre, menores_a_2000[i].apellido, menores_a_2000[i].fecha_de_nacimiento.anio);
-        }    
-    
-        ordenar_por_anio(menores_a_2000, ml);
-        
-        ordenar_por_dia(menores_a_2000, ml);
-        
-        cortar_desde = buscar(menores_a_2000, 2000, ml);
-        if(cortar_desde != -1){
-           cortar(menores_a_2000, cortar_desde);
-        }
-        mostrar(menores_a_2000, cortar_desde);       
-       return 0;
-    }
-   
 void ordenar_por_anio(vt_empleados menores_a_2000, int ml){
     int i, j;
     t_empleado aux;
@@ -345,6 +322,7 @@ void ordenar_por_dia(vt_empleados menores_a_2000, int ml){
                     aux.fecha_de_nacimiento.dia = menores_a_2000[j].fecha_de_nacimiento.dia;
                     aux.fecha_de_nacimiento.mes = menores_a_2000[j].fecha_de_nacimiento.mes;
                     aux.fecha_de_nacimiento.anio = menores_a_2000[j].fecha_de_nacimiento.anio;
+                    aux.sexo = menores_a_2000[j].sexo;
                     aux.nacionalidades = menores_a_2000[j].nacionalidades;
                     strcpy(menores_a_2000[j].nombre, menores_a_2000[j+1].nombre);
                     strcpy(menores_a_2000[j].apellido, menores_a_2000[j+1].apellido);
@@ -352,12 +330,14 @@ void ordenar_por_dia(vt_empleados menores_a_2000, int ml){
                     menores_a_2000[j].fecha_de_nacimiento.mes = menores_a_2000[j+1].fecha_de_nacimiento.mes;
                     menores_a_2000[j].fecha_de_nacimiento.anio = menores_a_2000[j+1].fecha_de_nacimiento.anio;
                     menores_a_2000[j].nacionalidades = menores_a_2000[j+1].nacionalidades;
+                    menores_a_2000[j].sexo = menores_a_2000[j+1].sexo;
                     strcpy(menores_a_2000[j+1].nombre, aux.nombre);
                     strcpy(menores_a_2000[j+1].apellido, aux.apellido);
                     menores_a_2000[j+1].fecha_de_nacimiento.dia = aux.fecha_de_nacimiento.dia;
                     menores_a_2000[j+1].fecha_de_nacimiento.mes = aux.fecha_de_nacimiento.mes;
                     menores_a_2000[j+1].fecha_de_nacimiento.anio = aux.fecha_de_nacimiento.anio;
                     menores_a_2000[j+1].nacionalidades = aux.nacionalidades;  
+                    menores_a_2000[j+1].sexo = aux.sexo;  
 }}}}}
     
 int buscar(vt_empleados menores_a_2000, int buscar, int ml){
@@ -408,6 +388,28 @@ void mostrar(vt_empleados menores_a_2000, int cortar_desde){
             printf("\n\t\t\t %s\n", menores_a_2000[i].nacionalidades.nacionalidades[j]);
 }}}
 
+
+void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml){
+       int i, cortar_desde;
+       vt_empleados menores_a_2000;
+       for(i = 0; i < ml; i++){
+           menores_a_2000[i] = empleado[i];
+        }    
+        printf("LISTA DESORDENADA:\n\n");
+        for(i = 0; i < ml; i++){
+           printf("%s %s: %i\n", menores_a_2000[i].nombre, menores_a_2000[i].apellido, menores_a_2000[i].fecha_de_nacimiento.anio);
+        }    
+    
+        ordenar_por_anio(menores_a_2000, ml);
+        
+        ordenar_por_dia(menores_a_2000, ml);
+        
+        cortar_desde = buscar(menores_a_2000, 2000, ml);
+        if(cortar_desde != -1){
+           cortar(menores_a_2000, cortar_desde);
+        }
+        mostrar(menores_a_2000, cortar_desde);
+}
 
 
 void doble_nacionalidad(vt_empleados empleados, int ml)
