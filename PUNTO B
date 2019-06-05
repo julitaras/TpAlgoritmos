@@ -1,6 +1,6 @@
 void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml);
 void ordenar_por_anio(vt_empleados* menores_a_2000, vt_empleados empleado, int ml);
-void ordenar_por_dia(vt_empleados menores_a_2000, int ml);
+void ordenar_por_dia(vt_empleados* menores_a_2000, int ml);
 int buscar(vt_empleados menores_a_2000, int buscar, int ml);
 void cortar(vt_empleados* menores_a_2000, int cortar_desde);
 void mostrar(vt_empleados menores_a_2000, int cortar_desde);
