@@ -384,9 +384,10 @@ void mostrar(vt_empleados menores_a_2000, int cortar_desde){
                                             menores_a_2000[i].fecha_de_nacimiento.anio);
         printf("\n\t\t Sexo: %c\n", menores_a_2000[i].sexo);
         printf("\t\t De nacionalidad(es): \n");
-        for(j=0; j < menores_a_2000->nacionalidades.ml_nacionalidades; j++){
+        for(j=0; j < menores_a_2000[i].nacionalidades.ml_nacionalidades; j++){
             printf("\n\t\t\t %s\n", menores_a_2000[i].nacionalidades.nacionalidades[j]);
 }}}
+
 
 int es_mayor_a_2000(vt_empleados menores_a_2000, int ml){
     int i;
