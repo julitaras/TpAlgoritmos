@@ -46,7 +46,7 @@ int buscar_argentinos(vt_empleados empleados, int ml)
     {
         for(j = 0; j < empleados[i].nacionalidades.ml_nacionalidades; j ++)
         {
-            if(strcmp(empleados[i].nacionalidades.nacionalidades[i], "argentina") || strcmp(empleados[i].nacionalidades.nacionalidades[i], "Argentina") )
+            if(strcmp(empleados[i].nacionalidades.nacionalidades[i], "argentina\n") || strcmp(empleados[i].nacionalidades.nacionalidades[i], "Argentina\n") )
             {
                 contador_argentinos ++;
             }

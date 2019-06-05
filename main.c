@@ -1,22 +1,4 @@
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@julitaras 
-0
-0 0 julitaras/TpAlgoritmos
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
-TpAlgoritmos/main.c
- Julieta yo que se
-58986ad 42 minutes ago
-446 lines (415 sloc)  12.2 KB
-    
-/*Una empresa que se dedica a la reubicaci�n de empleados tiene una lista de 500
+ /*Una empresa que se dedica a la reubicaci�n de empleados tiene una lista de 500
 empleados (como m�ximo) con la siguiente informaci�n.
 - Nombre y apellido. Con el formato "Apellidos, Nombres".
 - Fecha de nacimiento del empleado.
@@ -148,31 +130,32 @@ int validar_nacionalidades(ts_nacionalidad nacionalidad)
 	return es_valida;
 };
 
-void cargar_nacionalidades(t_nacionalidades nacionalidades)
+void cargar_nacionalidades(t_nacionalidades *nacionalidades)
 {
 	int i, continuar, es_correcta;
 	i = 0;
 	continuar = 0;
-	nacionalidades.ml_nacionalidades = 0;
+	nacionalidades->ml_nacionalidades = 0;
 	do
 	{
 		printf("Ingrese la/s nacionalidades:\n");
-		fgets(nacionalidades.nacionalidades[i], 12, stdin);
-		es_correcta = validar_nacionalidades(nacionalidades.nacionalidades[i]);
+		fgets(nacionalidades->nacionalidades[i], 12, stdin);
+		es_correcta = validar_nacionalidades(nacionalidades->nacionalidades[i]);
 		if(es_correcta == 0)
 		{
 			printf("No existe esa nacionalidad\n");
 		}
 		else
 		{
-			nacionalidades.ml_nacionalidades ++;
+			nacionalidades->ml_nacionalidades ++;
 			printf("Desea continuar cargando nacionalidades? (0)Si o (1)No: \n");//Mejorar con el SI y el NO
 			scanf("%i", &continuar);
 			fflush(stdin);
 		}
 		i++;
+		
 	}
-	while((nacionalidades.ml_nacionalidades > 5) || continuar != 1 || es_correcta != 1);
+	while((nacionalidades->ml_nacionalidades > 5) || continuar != 1 || es_correcta != 1);
 	
 };
 
@@ -291,7 +274,7 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 		cargar_nombre(empleados[i].nombre);
 		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
 		cargar_genero(empleados[i].sexo);
-		cargar_nacionalidades(empleados[i].nacionalidades);
+		cargar_nacionalidades(&empleados[i].nacionalidades);
 		*ml = *ml + 1;
 		printf("Desea coninuar cargando empleados? (0)Si o (1)No:  \n"); //Mejorar con el SI y el NO
 		scanf("%i", &continuar);
@@ -401,10 +384,11 @@ void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
    mostrar(menores_a_2000, cortar_desde);
 };
 
-void incrementar_posiciones(t_nacionalidades nacionalidades, int *nueva_posicion)
+void incrementar_posiciones(t_nacionalidades nacionalidades, int *nueva_posicion, int ml)
 {
    ts_nacionalidad comparar_nacionalidad;
-   for(int i = 0; i < ml; i++)
+   int i;
+   for(i = 0; i < ml; i++)
    {
        strcpy(comparar_nacionalidad,nacionalidades.nacionalidades[i]);
        if(nacionalidades.nacionalidades)
@@ -422,12 +406,12 @@ void crear_lista_arg_uru(int ml, vt_empleados empleados)
 {
    int i, nueva_posicion = 0, indice_anterior;
    indice_anterior = nueva_posicion;
-   vt_empleado empleados_arg_uru;
+   vt_empleados empleados_arg_uru;
    for(i = 0 ; i < ml ; i++)
    {
-       if(strlen(empleados[i].nacionalidades.nacionalidades) == 1)
+       if(strlen(empleados[i].nacionalidades.nacionalidades[i]) == 1)
 	   {
-           incrementar_posiciones(empleados[i].nacionalidades, &nueva_posicion);
+           incrementar_posiciones(empleados[i].nacionalidades, &nueva_posicion, empleados[i].nacionalidades.ml_nacionalidades);
            if(indice_anterior < nueva_posicion)
 		   {
                empleados_arg_uru[nueva_posicion] = empleados[i];
@@ -469,6 +453,30 @@ void buscar_empleado_punto_c (vt_empleados empleado, int ml)
 	}
 };
 */
+int buscar_argentinos(vt_empleados empleados, int ml)
+{
+	printf("Entre a buscar argentina");
+    int i, contador_argentinos, j;
+    contador_argentinos = 0;
+    for(i = 0; i < ml; i++)
+    {
+        for(j = 0; j < empleados[i].nacionalidades.ml_nacionalidades; j ++)
+        {
+            if( (strcmp(empleados[i].nacionalidades.nacionalidades[j], "argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[j], "Argentina\n") == 0 ) )
+            {
+                contador_argentinos ++;
+            }
+        }
+    }
+    return contador_argentinos;
+}
+void porcentaje_argentinos(vt_empleados empleados, int ml)
+{
+    int contador_argentinos, porcentaje;
+    contador_argentinos = buscar_argentinos(empleados, ml);
+    porcentaje = ((contador_argentinos / ml) * 100);
+    printf("El porcentaje de empleados argentinos es de: %i ", porcentaje);
+}
 void main() 
 {
 	vt_empleados empleados;
@@ -480,7 +488,7 @@ void main()
 		printf ("(1) Punto B:\n");
 		//printf ("(2) Punto C:\n");
 		printf ("(3) Punto D:\n");
-		//printf ("(4) Punto E:\n");
+		printf ("(4) Punto E:\n");
 		scanf ("%i", &opcion);
 		fflush (stdin);
 		switch(opcion)
@@ -489,13 +497,14 @@ void main()
 					break;
 		//	case 2: buscar_empleado_punto_c(empleados, ml);
 		//			break;
-			case 3: crear_lista_arg_uru(ml, empleados)
+			case 3: crear_lista_arg_uru(ml, empleados);
 					break;
-		//	case 4: break;
+			case 4: porcentaje_argentinos(empleados, ml);
+					 break;
 		}
 		printf ("Desea realizar otra operacion? (0)Si o (1)No: ");
 		scanf ("%i", &continuar);
 		fflush(stdin);
 	}
-	while/*(*/( (opcion < 1) /*&& (opcion > 4) &&*/ && (continuar != 1));
+	while/*(*/( continuar != 1);
 }
