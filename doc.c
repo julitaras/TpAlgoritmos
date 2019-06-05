@@ -75,6 +75,15 @@ int validar_fecha(t_fecha fecha)
     }
     return fecha_correcta;
 };
+
+
+void mostrar_nacidos_antes_2000(vt_empleados empleado);
+void ordenar_por_anio(vt_empleados empleado, int ml);
+void ordenar_por_dia(vt_empleados empleado, int ml);
+int buscar(vt_empleados empleado, int buscar, int ml);
+void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde);
+void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad);
+
 int validar_nombre(char caracter_nombre)
 {
     t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
@@ -255,88 +264,6 @@ void main()
     cargar_empleado(empleados, &ml);
 }
 
-
-
-
-//////////////////////PUNTO B//////////////////
-
-void mostrar(VT_Empleados empleado, int ml);
-void ordenar(VT_Empleados empleado);
-int buscar(VT_Empleados empleado, int buscar);
-void cortar(VT_Empleados empleado, VT_Empleados menores_a_2000, int cortar_desde);
-
-int main(){
-   int i, cortar_desde;
-   VT_Empleados empleado;
-   VT_Empleados menores_a_2000;
-  
-   ordenar(empleado);
-
-   cortar_desde = buscar(empleado, 2000);
-   if(cortar_desde != -1){
-       cortar(empleado, menores_a_2000, cortar_desde);
-   }
-
-   mostrar(menores_a_2000, ml);
-  
-   return 0;
-}
-void ordenar(VT_Empleados empleado){
-   int i, j;
-   T_Empleado aux;
-    for (i=1; i < TAM; i++){
-       for(j=0 ; j < TAM - i; j++){
-           if (empleado[j].anio > empleado[j+1].anio){
-               aux = empleado[j];
-               empleado[j] = empleado[j+1];
-               empleado[j+1] = aux;   
-             }
-         }
-    }
-}
-int buscar(VT_Empleados empleado, int buscar){
-   int medio, inicio, final;
-   inicio = 0;
-   final = TAM;
-    while(inicio <= final){
-       medio = (inicio + final)/2;
-       if(empleado[medio].anio == buscar){
-            return medio;
-       }
-        if(empleado[medio].anio < buscar){
-            inicio = medio+1;
-        }
-        else{
-            final = medio-1;
-        }
-    }
-    return -1;  
-}
-void cortar(VT_Empleados empleado, VT_Empleados menores_a_2000, int cortar_desde){
-   int i, j;
-   T_Empleado copia;
-   for(i = 0; i < cortar_desde; i++){
-       copia.dia = empleado[i].dia;
-       copia.mes = empleado[i].mes;
-       copia.anio = empleado[i].anio;
-       menores_a_2000[i] = copia;
-   }
-}
-
-void mostrar(VT_Empleados empleado, int ml, int ml_nacionalidad){
-   int i, j;
-   for(i = 0; i < ml; i++){
-       printf("EL EMPLEADO: %i", empleado[i].Apellido_Nombre);
-       printf("\n\t\t Nació el: %i %i %i", empleado[i].Fecha_De_Nacimiento.dia,
-                                           empleado[i].Fecha_De_Nacimiento.mes,
-                                           empleado[i].Fecha_De_Nacimiento.anio);
-       printf("\n\t\t Sexo: %c\n", empleado[i].Fecha_De_Nacimiento.sexo);
-       for(j=0; j < ml_nacionalidad; j++){
-           printf("\n\t\t De nacionalidad(es): %s\n", empleado[i].Nacionalidad[0]);
-       }
-   }   
-}
-
 void mostrar_punto_D(int ml, vt_empleados empleados)
 {
 	int i;
@@ -412,13 +339,6 @@ void mostrar_punto_D(int ml,vt_empleados empleados){
             printf("El empleado %s %s no tiene mas de una nacionalidad, o una de ellas no es la Argentina o la uruguaya",empleados[i].apellido,empleados[i].nombre,empleados[i].sexo);//Falta mostrar la fecha y el genero del empleado
     }
     }
-
-void mostrar_nacidos_antes_2000(vt_empleados empleado);
-void ordenar_por_anio(vt_empleados empleado, int ml);
-void ordenar_por_dia(vt_empleados empleado, int ml);
-int buscar(vt_empleados empleado, int buscar, int ml);
-void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde);
-void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad);
 
 void mostrar_nacidos_antes_2000(vt_empleados empleado){
    int i, cortar_desde;
@@ -509,111 +429,6 @@ void mostrar(vt_empleados empleado, int cortar_desde, int ml_nacionalidad){
    }   
 }
 
-
-
-///nuevo puento b
-
-void mostrar_nacidos_antes_2000(vt_empleados empleado, ml);
-void ordenar_por_anio(vt_empleados empleado, int ml);
-void ordenar_por_dia(vt_empleados empleado, int ml);
-int buscar(vt_empleados empleado, int buscar, int ml);
-void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde);
-void mostrar(vt_empleados empleado, int cortar_desde);
-
-void mostrar_nacidos_antes_2000(vt_empleados empleado, ml);
-void ordenar_por_anio(vt_empleados empleado, int ml);
-void ordenar_por_dia(vt_empleados empleado, int ml);
-int buscar(vt_empleados empleado, int buscar, int ml);
-void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde);
-void mostrar(vt_empleados empleado, int cortar_desde);
-
-void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml){
-   int i, cortar_desde;
-   vt_empleados menores_a_2000;
-   ordenar_por_anio(empleado);
-   ordenar_por_dia(empleado);
-
-   cortar_desde = buscar(empleado, 2000, ml);
-   if(cortar_desde != -1){
-       cortar(empleado, menores_a_2000, cortar_desde);
-   }
-   mostrar(menores_a_2000, cortar_desde);
-}
-
-void ordenar_por_anio(vt_empleados empleado, int ml){
-   int i, j;
-   vt_empleados aux;
-    for (i=1; i < ml; i++){
-       for(j=0 ; j < ml - i; j++){
-           if (empleado[j].fecha_de_nacimiento.anio > empleado[j+1].fecha_de_nacimiento.anio){
-               aux = empleado[j];
-               empleado[j] = empleado[j+1];
-               empleado[j+1] = aux;   
-             }
-         }
-    }
-}
-
-void ordenar_por_dia(vt_empleados empleado, int ml){
-   int i, j;
-   vt_empleados aux;
-    for (i=1; i < ml; i++){
-       for(j=0 ; j < ml - i; j++){
-           if((empleado[j].fecha_de_nacimiento.anio == empleado[j+1].fecha_de_nacimiento.anio) && (empleado[j].fecha_de_nacimiento.mes == empleado[j+1].fecha_de_nacimiento.mes)){
-               if (empleado[j].fecha_de_nacimiento.dia > empleado[j+1].fecha_de_nacimiento.dia){
-                   aux = empleado[j];
-                   empleado[j] = empleado[j+1];
-                   empleado[j+1] = aux;   
-                 }               
-           }
-         }
-    }
-}
-
-int buscar(vt_empleados empleado, int buscar, int ml){
-   int medio, inicio, final;
-   inicio = 0;
-   final = ml;
-    while(inicio <= final){
-       medio = (inicio + final)/2;
-       if(empleado[medio].fecha_de_nacimiento.anio == buscar){
-            return medio;
-       }
-        if(empleado[medio].fecha_de_nacimiento.anio < buscar){
-            inicio = medio+1;
-        }
-        else{
-            final = medio-1;
-        }
-    }
-    return -1;  
-}
-void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde){
-   int i, j;
-   t_empleado copia_empleado;
-   for(i = 0; i < cortar_desde; i++){
-       copia_empleado.fecha_de_nacimiento.dia = empleado[i].fecha_de_nacimiento.dia;
-       copia_empleado.fecha_de_nacimiento.mes = empleado[i].fecha_de_nacimiento.mes;
-       copia_empleado.fecha_de_nacimiento.anio = empleado[i].fecha_de_nacimiento.anio;
-       menores_a_2000[i] = copia_empleado;
-   }  
-}
-
-void mostrar(vt_empleados empleado, int cortar_desde){
-   int i, j;
-   for(i = 0; i < cortar_desde; i++){
-       printf("EL EMPLEADO: %s %s", empleado[i].nombre,
-                                    empleado[i].apellido);
-       printf("\n\t\t Nació el: %i %i %i", empleado[i].fecha_de_nacimiento.dia,
-                                           empleado[i].fecha_de_nacimiento.mes,
-                                           empleado[i].fecha_de_nacimiento.anio);
-       printf("\n\t\t Sexo: %c\n", empleado[i].fecha_de_nacimiento.sexo);
-       printf("\n\t\t De nacionalidad(es): \n");
-       for(j=0; j < empleado.nacionalidades.ml_nacionalidad; j++){
-           printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades);
-       }
-   }   
-}
 
 
 
