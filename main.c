@@ -321,16 +321,20 @@ int buscar(vt_empleados empleado, int buscar, int ml)
    int medio, inicio, final;
    inicio = 0;
    final = ml;
-    while(inicio <= final){
+    while(inicio <= final)
+	{
        medio = (inicio + final)/2;
-       if(empleado[medio].fecha_de_nacimiento.anio == buscar){
+       if(empleado[medio].fecha_de_nacimiento.anio == buscar)
+	   {
             return medio;
        }
-        if(empleado[medio].fecha_de_nacimiento.anio < buscar){
-            inicio = medio+1;
+        if(empleado[medio].fecha_de_nacimiento.anio < buscar)
+		{
+            inicio = medio + 1;
         }
-        else{
-            final = medio-1;
+        else
+		{
+            final = medio - 1;
         }
     }
     return -1;  
@@ -339,7 +343,8 @@ void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde
 {
    int i, j;
    t_empleado copia_empleado;
-   for(i = 0; i < cortar_desde; i++){
+   for(i = 0; i < cortar_desde; i++)
+   {
        copia_empleado.fecha_de_nacimiento.dia = empleado[i].fecha_de_nacimiento.dia;
        copia_empleado.fecha_de_nacimiento.mes = empleado[i].fecha_de_nacimiento.mes;
        copia_empleado.fecha_de_nacimiento.anio = empleado[i].fecha_de_nacimiento.anio;
@@ -369,17 +374,14 @@ void mostrar(vt_empleados empleado, int cortar_desde)
 
 void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
 {
-	printf("dentro del punto b ");
    int i, cortar_desde;
    vt_empleados menores_a_2000;
    ordenar_por_anio(empleado, ml);
    ordenar_por_dia(empleado, ml);
-	printf("Depues de ordenar los empleados");
    cortar_desde = buscar(empleado, 2000, ml);
-   printf("cortando %i", cortar_desde);
-   if(cortar_desde != -1){
-       cortar(empleado, menores_a_2000, cortar_desde);
-	printf("despues de cortar\n");
+   if(cortar_desde != -1)
+   {
+	   cortar(empleado, menores_a_2000, cortar_desde);
    }
    mostrar(menores_a_2000, cortar_desde);
 };
