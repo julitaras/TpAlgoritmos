@@ -221,39 +221,39 @@ void cargar_apellido(t_cadena apellido)
 	} while(apellido_incorrecto != 0);
 };
 
-void cargar_fecha_nacimiento(t_fecha fecha_nacimiento)
+void cargar_fecha_nacimiento(t_fecha *fecha_nacimiento)
 {
 	int es_correcta;
 	do
 	{
 		printf("Ingrese la fecha de nacimiento:\n");
 		printf("Dia: ");
-		scanf("%i",&fecha_nacimiento.dia);
+		scanf("%i",&fecha_nacimiento->dia);
 		fflush(stdin);
 		printf("mes: ");
-		scanf("%i",&fecha_nacimiento.mes);
+		scanf("%i",&fecha_nacimiento->mes);
 		fflush(stdin);
 		printf("Año: ");
-		scanf("%i",&fecha_nacimiento.anio);
+		scanf("%i",&fecha_nacimiento->anio);
 		fflush(stdin);
-		es_correcta = validar_fecha(fecha_nacimiento);
+		es_correcta = validar_fecha(*fecha_nacimiento);
 		if(es_correcta == 0)
 		{
-			printf("Ingreso mal la fecha %i/%i/%i\n",fecha_nacimiento.dia, fecha_nacimiento.mes, fecha_nacimiento.anio);
+			printf("Ingreso mal la fecha %i/%i/%i\n",fecha_nacimiento->dia, fecha_nacimiento->mes, fecha_nacimiento->anio);
 		}
 	}
 	while(es_correcta != 1);
 };
 
-void cargar_genero(char genero)
+void cargar_genero(char *genero)
 {
 	int es_correcta;
 	do
 	{
 		printf("Ingrese el sexo:\n");
-		scanf(" %c",&genero);
+		scanf(" %c",genero);
 		fflush(stdin);
-		es_correcta = validar_genero(genero);
+		es_correcta = validar_genero(*genero);
 		if(es_correcta== 0)
 		{
 			printf("Ingreso mal el sexo, (F)emenino, (M)asculino");
@@ -272,11 +272,11 @@ void cargar_empleado(vt_empleados empleados, int *ml)
 	{
 		cargar_apellido(empleados[i].apellido);
 		cargar_nombre(empleados[i].nombre);
-		cargar_fecha_nacimiento(empleados[i].fecha_de_nacimiento);	
-		cargar_genero(empleados[i].sexo);
+		cargar_fecha_nacimiento(&empleados[i].fecha_de_nacimiento);	
+		cargar_genero(&empleados[i].sexo);
 		cargar_nacionalidades(&empleados[i].nacionalidades);
 		*ml = *ml + 1;
-		printf("Desea coninuar cargando empleados? (0)Si o (1)No:  \n"); //Mejorar con el SI y el NO
+		printf("Desea coninuar cargando empleados? (0)Si o (1)No:  \n"); 
 		scanf("%i", &continuar);
 		fflush(stdin);
 		i++;
@@ -350,7 +350,7 @@ void cortar(vt_empleados empleado, vt_empleados menores_a_2000, int cortar_desde
 void mostrar(vt_empleados empleado, int cortar_desde)
 {
    int i, j;
-   printf("Dentro de mostrar\n");
+
    for(i = 0; i < cortar_desde; i++)
    {
        printf("EL EMPLEADO: %s %s", empleado[i].nombre,
@@ -362,7 +362,7 @@ void mostrar(vt_empleados empleado, int cortar_desde)
        printf("\n\t\t De nacionalidad(es): \n");
        for(j=0; j < empleado[i].nacionalidades.ml_nacionalidades; j++)
 	   {
-           printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades);
+           printf("\n\t\t\t %s\n", empleado[i].nacionalidades.nacionalidades[j]);
        }
    }   
 };
@@ -384,75 +384,31 @@ void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml)
    mostrar(menores_a_2000, cortar_desde);
 };
 
-void incrementar_posiciones(t_nacionalidades nacionalidades, int *nueva_posicion, int ml)
-{
-   ts_nacionalidad comparar_nacionalidad;
-   int i;
-   for(i = 0; i < ml; i++)
-   {
-       strcpy(comparar_nacionalidad,nacionalidades.nacionalidades[i]);
-       if(nacionalidades.nacionalidades)
-	   {
-           strlwr(comparar_nacionalidad);
-           if((strcmp(comparar_nacionalidad,"argentina") == 0) ||((strcmp(comparar_nacionalidad, "uruguaya")) == 0))
-		   {
-               *nueva_posicion++;
-           }
-       }
-   }
-};
 
-void crear_lista_arg_uru(int ml, vt_empleados empleados)
+void doble_nacionalidad(vt_empleados empleados, int ml)
 {
-   int i, nueva_posicion = 0, indice_anterior;
-   indice_anterior = nueva_posicion;
-   vt_empleados empleados_arg_uru;
-   for(i = 0 ; i < ml ; i++)
-   {
-       if(strlen(empleados[i].nacionalidades.nacionalidades[i]) == 1)
-	   {
-           incrementar_posiciones(empleados[i].nacionalidades, &nueva_posicion, empleados[i].nacionalidades.ml_nacionalidades);
-           if(indice_anterior < nueva_posicion)
-		   {
-               empleados_arg_uru[nueva_posicion] = empleados[i];
-           }
-           indice_anterior = indice_anterior + nueva_posicion;
-       }
-   }
+      int d, i, posicion_inicial = 0;
+      vt_empleados empleados_arg_uru;
 
-   mostrar(empleados_arg_uru, nueva_posicion);
-};
-/*
-void buscar_empleado_punto_c (vt_empleados empleado, int ml)
-{
-	int i, j, aux;
-	char palabra[30];
-	aux = 0;
-	int cont = 0;
-		
-	printf ("Ingresar apellido a buscar: ");
-	fgets (palabra, 30, stdin);
-	
-	for (i = 0; i < ml && aux == 0; i++)
-	{
-		j = strcmp (palabra, empleado[i].apellido);
-		if (j == 0 && (empleado[max_empleados].sexo == 'f' || empleado[max_empleados].sexo == 'F'))
-		{ /*Falta la condicion de haber nacido en verano*/
-/*			printf ("Los siguiente empleados tienen apellido %s", empleado[i].apellido);
-			printf ("Nombre: %s", empleado[max_empleados].nombre); 
-			printf ("Nacionalidad: %s", empleado[max_empleados].nacionalidades);
-			printf ("Sexo: %c\n", empleado[max_empleados].sexo);
-// Falta leer fecha de nacimiento
-// Solo esta mostrando los datos del ultimo empleado cargado
-		} 
-		else
-		{
-			printf ("No se encontro empleado\n");
+	  for(i = 0; i < ml; i++)
+	  {
+		  if(empleados[i].nacionalidades.ml_nacionalidades > 1)
+		  {
+        	for(d = 0; d < empleados[i].nacionalidades.ml_nacionalidades; d++)
+        	{
+            	if((strcmp(empleados[i].nacionalidades.nacionalidades[d],"Argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "Uruguaya\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "uruguaya\n") == 0) )
+            	{
+					
+					empleados_arg_uru[posicion_inicial] = empleados[i];
+					
+					posicion_inicial ++;
+            	}
+        	}
 		}
-		aux = 1;
-	}
-};
-*/
+    }
+	mostrar(empleados_arg_uru, posicion_inicial);
+}
+
 int buscar_argentinos(vt_empleados empleados, int ml)
 {
 	printf("Entre a buscar argentina");
@@ -497,7 +453,7 @@ void main()
 					break;
 		//	case 2: buscar_empleado_punto_c(empleados, ml);
 		//			break;
-			case 3: crear_lista_arg_uru(ml, empleados);
+			case 3: doble_nacionalidad(empleados, ml);
 					break;
 			case 4: porcentaje_argentinos(empleados, ml);
 					 break;
