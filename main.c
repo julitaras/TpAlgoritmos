@@ -90,10 +90,15 @@ int validar_genero(char genero){
 
 //Validación de la nacionalidad por mínusculas o mayúsculas
 int validar_nacionalidades(nombre_nacionalidad nacionalidad){
-	int es_valida, result;
+	int es_valida, result, i;
 	es_valida = 0;
-	if((strcmp(nacionalidad, "argentina\n") == 0) || (strcmp(nacionalidad, "Argentina\n") == 0) || (strcmp(nacionalidad, "uruguaya\n") == 0) || (strcmp(nacionalidad, "Uruguaya\n") == 0) || (strcmp(nacionalidad, "chilena\n") == 0) || (strcmp(nacionalidad, "Chilena\n") == 0) || (strcmp(nacionalidad, "peruana\n") == 0) ||(strcmp(nacionalidad, "Peruana\n") == 0) || (strcmp(nacionalidad, "boliviana\n") == 0) || (strcmp(nacionalidad, "Boliviana\n") == 0) || (strcmp(nacionalidad, "brasileña\n") == 0) || (strcmp(nacionalidad, "Brasilenia\n") == 0) || (strcmp(nacionalidad, "brasilenia\n") == 0) || (strcmp(nacionalidad, "Brasile?a\n") == 0) || (strcmp(nacionalidad, "paraguaya\n") == 0) || (strcmp(nacionalidad, "Paraguaya\n") == 0) ){
-		es_valida = 1;
+	vec_nacionalidades const_nacionalidades = {"argentina\n", "uruguaya\n", "chilena\n", "peruana\n", "boliviana\n", "brasileña\n", "paraguaya\n"};
+	for(i = 0; i <= 7; i++)
+	{
+		if(strcmp(nacionalidad, const_nacionalidades[i]) == 0)
+		{
+			es_valida = 1;
+		}
 	}
 	return es_valida;
 };
@@ -334,8 +339,8 @@ int buscar_argentinos(vt_empleados empleados, int ml)
 void porcentaje_argentinos(vt_empleados empleados, int ml){
     int contador_argentinos, porcentaje;
     contador_argentinos = buscar_argentinos(empleados, ml);
-    porcentaje = ((contador_argentinos / ml) * 100);
-    printf("\t\t\t\tEl porcentaje de empleados argentinos es de: %i%.\n", porcentaje);
+    porcentaje = ((contador_argentinos * 100)/ml );
+    printf("\t\t\t\tEl porcentaje de empleados argentinos es de: %i.\n", porcentaje);
 }
 void main(){
 	vt_empleados empleados;
