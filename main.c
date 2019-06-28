@@ -342,6 +342,36 @@ void porcentaje_argentinos(vt_empleados empleados, int ml){
     porcentaje = ((contador_argentinos * 100)/ml );
     printf("\t\t\t\tEl porcentaje de empleados argentinos es de: %i.\n", porcentaje);
 }
+void buscar_empleado_punto_c (vt_empleados empleados, int ml)
+{
+	int i, j, aux, posicion;
+	t_cadena palabra;
+	aux = 0;
+    vt_empleados mujeres_verano;
+	posicion = 0;	
+
+	printf ("Ingresar apellido a buscar: \n");
+	printf ("Solo se mostraran a las mujeres nacidas en verano\n");
+	fgets (palabra, 30, stdin);
+	
+	for (i = 0; i < ml && aux == 0; i++)
+    {
+		j = strcmp (palabra, empleados[i].apellido);
+		if (j == 0 && (empleados[i].sexo == 'f' || empleados[i].sexo == 'F') && ((empleados[i].fecha_nacimiento.mes == 12 && empleados[i].fecha_nacimiento.dia >= 21) || empleados[i].fecha_nacimiento.mes < 3 || (empleados[i].fecha_nacimiento.mes == 3 && empleados[i].fecha_nacimiento.dia < 21)))
+		{
+            mujeres_verano[posicion] = empleados[i];
+            posicion ++;
+            mostrar(mujeres_verano, posicion);
+		}		
+		 else 
+		{
+			printf ("No se encontro empleado\n");
+			aux = 1;
+		}	
+	}
+}
+
+
 void main(){
 	vt_empleados empleados;
 	int ml, opcion, continuar;
@@ -349,7 +379,7 @@ void main(){
 	do{ 
 		printf ("\t\t\t\tElegir opcion a realizar:\n");
 		printf ("\t\t\t\t(1) Punto B:\n");
-		//printf ("(2) Punto C:\n");
+		printf ("\t\t\t\t(2) Punto C:\n");
 		printf ("\t\t\t\t(3) Punto D:\n");
 		printf ("\t\t\t\t(4) Punto E:\n");
 		printf("\t\t\t\t- ");
@@ -358,8 +388,8 @@ void main(){
 		switch(opcion){
 			case 1: mostrar_nacidos_antes_2000(empleados, ml);
 					break;
-		//	case 2: buscar_empleado_punto_c(empleados, ml);
-		//			break;
+			case 2: buscar_empleado_punto_c(empleados, ml);
+					break;
 			case 3: doble_nacionalidad(empleados, ml);
 					break;
 			case 4: porcentaje_argentinos(empleados, ml);
