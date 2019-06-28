@@ -23,11 +23,11 @@ E- Indicar el porcentaje de empleados argentinos*/
 #define max_string 30
 #define NO "1\n"
 typedef char nombre_nacionalidad[max_string]; 
-typedef nombre_nacionalidad reg_nacionalidades[max_nacionalidades];
+typedef nombre_nacionalidad vec_nacionalidades[max_nacionalidades];
 
 //Defino un struct de nacinalidades para poder manejar el maximo logico en cada empleado
 typedef struct{
-	reg_nacionalidades nacionalidades;
+	vec_nacionalidades nacionalidades;
 	int ml_nacionalidades;
 } t_nacionalidades;
 
@@ -69,7 +69,7 @@ int validar_numero(int numero){
 	}
 	return incorrecto;
 };
-//Valido la fecha de nacimiento, FALTA VALIDAR SI SE INGRESA UN CARACTER EN VEZ DE NUMERO
+//Valido la fecha de nacimiento
 int validar_fecha(t_fecha fecha){
 	int fecha_correcta;
 	fecha_correcta = 0;
@@ -97,7 +97,7 @@ int validar_fecha(t_fecha fecha){
 	return fecha_correcta;
 };
 
-
+//Validación del género por caracter
 int validar_genero(char genero){
 	int es_valido;
 	es_valido = 0;
@@ -107,6 +107,7 @@ int validar_genero(char genero){
 	return es_valido;
 };
 
+//Validación de la nacionalidad por mínusculas o mayúsculas
 int validar_nacionalidades(nombre_nacionalidad nacionalidad){
 	int es_valida, result;
 	es_valida = 0;
@@ -116,6 +117,7 @@ int validar_nacionalidades(nombre_nacionalidad nacionalidad){
 	return es_valida;
 };
 
+//Módulo de carga de nacionalidades
 void cargar_nacionalidades(t_nacionalidades *nacionalidades){
     int i = 0, es_correcta;
     nacionalidades->ml_nacionalidades = 0;
@@ -138,6 +140,7 @@ void cargar_nacionalidades(t_nacionalidades *nacionalidades){
 	}	
 }
 
+//
 int validar_string(char caracter){
 	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
 	int i, incorrecto;
@@ -152,6 +155,8 @@ int validar_string(char caracter){
 	}
 	return incorrecto;
 };
+
+//Módulo de carga de nombre
 void cargar_nombre(t_cadena nombre ){
 	int j, nombre_incorrecto, largo;
 	do{
@@ -172,6 +177,7 @@ void cargar_nombre(t_cadena nombre ){
 	while(nombre_incorrecto != 0 );
 };
 
+//Módulo de carga de aoellido
 void cargar_apellido(t_cadena apellido){
 	int j, apellido_incorrecto, largo;
 	do{
@@ -190,6 +196,7 @@ void cargar_apellido(t_cadena apellido){
 	} while(apellido_incorrecto != 0);
 };
 
+//Módulo de carga de fecha de nacimiento, formato: ddmmaa
 void cargar_fecha_nacimiento(t_fecha *fecha_nacimiento){
 	int es_correcta;
 	do{
@@ -214,6 +221,7 @@ void cargar_fecha_nacimiento(t_fecha *fecha_nacimiento){
 	while(es_correcta != 1);
 };
 
+//Módulo de carga de género por caracter
 void cargar_genero(char *genero){
 	int es_correcta;
 	do{
@@ -229,6 +237,7 @@ void cargar_genero(char *genero){
 	while(es_correcta != 1);
 }
 
+//Módulo de carga de los datos del empleado
 void cargar_empleado(vt_empleados empleados, int *ml){
 	int continuar, i, ml_nacionalidad;
 	continuar = 0;
@@ -315,15 +324,14 @@ void mostrar_nacidos_antes_2000(vt_empleados empleado, int ml){
 void doble_nacionalidad(vt_empleados empleados, int ml){
     int d, i, posicion_inicial = 0;
     vt_empleados empleados_arg_uru;
-
     for(i = 0; i < ml; i++){
         if(empleados[i].nacionalidades.ml_nacionalidades > 1){
-        for(d = 0; d < empleados[i].nacionalidades.ml_nacionalidades; d++){
-            if((strcmp(empleados[i].nacionalidades.nacionalidades[d],"Argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "Uruguaya\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "uruguaya\n") == 0)){
-                empleados_arg_uru[posicion_inicial] = empleados[i];
-                posicion_inicial ++;
-                }
-            }
+			for(d = 0; d < empleados[i].nacionalidades.ml_nacionalidades; d++){
+				if((strcmp(empleados[i].nacionalidades.nacionalidades[d],"Argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "argentina\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "Uruguaya\n") == 0) || (strcmp(empleados[i].nacionalidades.nacionalidades[d], "uruguaya\n") == 0)){
+					empleados_arg_uru[posicion_inicial] = empleados[i];
+					posicion_inicial ++;
+				}
+			}
         }
     }
     mostrar(empleados_arg_uru, posicion_inicial);
