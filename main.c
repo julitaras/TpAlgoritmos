@@ -192,7 +192,7 @@ void cargar_fecha_nacimiento(t_fecha *fecha_nacimiento){
 		printf("\t\t\t\t\t\t- ");
 		scanf("%i",&fecha_nacimiento->mes);
 		fflush(stdin);
-		printf("\t\t\t\t\t\tAño: \n");
+		printf("\t\t\t\t\t\tAnio: \n");
 		printf("\t\t\t\t\t\t- ");
 		scanf("%i",&fecha_nacimiento->anio);
 		fflush(stdin);
