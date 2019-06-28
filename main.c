@@ -250,7 +250,7 @@ void cargar_empleado(vt_empleados empleados, int *ml){
 		cargar_genero(&empleados[i].sexo);
 		cargar_nacionalidades(&empleados[i].nacionalidades);
 		*ml = *ml + 1;
-		printf("\t\t\t\tDesea coninuar cargando empleados? (0)Si o (1)No: \n"); 
+		printf("\t\t\t\t¿Desea continuar cargando empleados? (0)Si o (1)No.\n"); 
 		printf("\t\t\t\t\t\t- ");
 		scanf("%i", &continuar);
 		fflush(stdin);
