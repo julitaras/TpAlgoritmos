@@ -96,7 +96,7 @@ int validar_nacionalidades(nombre_nacionalidad nacionalidad){
 	vec_nacionalidades const_nacionalidades = {"argentina\n", "uruguaya\n", "chilena\n", "peruana\n", "boliviana\n", "brasileña\n", "paraguaya\n"};
 	for(i = 0; i <= 7; i++)
 	{
-		if(strcmp(nacionalidad, const_nacionalidades[i]) == 0)
+		if((strcmp(nacionalidad, const_nacionalidades[i]) == 0) || (strcmp(nacionalidad, strupr(const_nacionalidades[i])) == 0) )
 		{
 			es_valida = 1;
 		}
