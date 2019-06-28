@@ -18,6 +18,7 @@ nacionalidad. Mostrar todos los datos de cada empleado.
 E- Indicar el porcentaje de empleados argentinos*/
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #define max_nacionalidades 7
 #define max_empleados 500
 #define max_string 30
@@ -127,17 +128,13 @@ void cargar_nacionalidades(t_nacionalidades *nacionalidades){
 }
 
 //
-int validar_string(char caracter){
-	t_vector numeros = {'1','2','3','4','5','6','7','8','9'};
-	int i, incorrecto;
+int validar_string(char caracter)
+{
+	int incorrecto;
 	incorrecto = 0;
-	i= 0;
-	
-	for(i = 0; i <= 8; i++){
-		if(caracter == numeros[i]){
-			incorrecto = 1;
-			printf("%i", incorrecto);
-		}
+	if(isdigit(caracter) != 0)
+	{
+		incorrecto = 1;
 	}
 	return incorrecto;
 };
@@ -280,7 +277,8 @@ void mostrar(vt_empleados empleado, int limite){
     for(i = 0; i < limite; i++){
         strcat(cadena, empleado[i].nombre);
         strcat(cadena, empleado[i].apellido);
-        printf("\n\t\t\t\tEL EMPLEADO: %s", cadena);
+		printf("%s", cadena);
+        printf("\n\t\t\t\tEL EMPLEADO:\n %s", cadena);
         printf("\n\t\t\t\t\t\t Nació el: %i - %i - %i", empleado[i].fecha_nacimiento.dia,
                                             empleado[i].fecha_nacimiento.mes,
                                             empleado[i].fecha_nacimiento.anio);
@@ -365,7 +363,7 @@ void buscar_empleado_punto_c (vt_empleados empleados, int ml)
 		}		
 		 else 
 		{
-			printf ("No se encontro empleado\n");
+			printf ("\t\t\t\tNo se encontro empleado\n");
 			aux = 1;
 		}	
 	}
