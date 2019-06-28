@@ -53,22 +53,6 @@ typedef struct{
 //Defino el array de Empleados 
 typedef t_empleado vt_empleados[max_empleados];
 
-int validar_numero(int numero){
-	t_vector letras = {'a', 'b', 'c', 'd', 'e' ,'f', 'g', 'h', 'i' ,'j','k', 'l', 'm', 'n' ,'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-	int i, incorrecto;
-	incorrecto = 0;
-	i= 0;
-	
-	for(i = 0; i <= 26; i++)
-	{
-		if(numero == letras[i])
-		{
-			incorrecto = 1;
-			printf("%i", incorrecto);
-		}
-	}
-	return incorrecto;
-};
 //Valido la fecha de nacimiento
 int validar_fecha(t_fecha fecha){
 	int fecha_correcta;
