@@ -73,9 +73,6 @@ int validar_numero(int numero){
 int validar_fecha(t_fecha fecha){
 	int fecha_correcta;
 	fecha_correcta = 0;
-	if( (validar_numero(fecha.dia) == 0) || (validar_numero(fecha.mes) == 0) || (validar_numero(fecha.anio) == 0)){
-		fecha_correcta = 1;
-	}
 	if( (fecha.mes >=1) && (fecha.mes <= 12) ){
 		switch(fecha.mes){
 			case 1: case 3: case 5: case 7: case 8: case 10: case 12:
