@@ -1,4 +1,4 @@
-# TpAlgoritmos
+# TP - Algoritmos 1
 Una empresa que se dedica a la reubicación de empleados tiene una lista de 500 empleados (como máximo) con la siguiente información. 
 - Nombre y apellido. Con el formato "Apellidos, Nombres". 
 - Fecha de nacimiento del empleado. 
